@@ -28,6 +28,6 @@ class Database {
     }
 }
 
-$database = new Database("localhost", "web", "admin", "~{2jL3%:K7h](:P£", "utf8mb4");
+$database = new Database（);
 $pdo = $database->getPdo();
 ?>
