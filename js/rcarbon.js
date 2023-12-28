@@ -1,3 +1,22 @@
+const priceInput = document.querySelector('#price');
+const carbontotalInput = document.querySelector('#carbontotal');
+
+priceInput.addEventListener('input', formatNumber);
+carbontotalInput.addEventListener('input', formatNumber);
+
+function formatNumber() {
+  let inputValue = this.value.replace(/,/g, "");
+
+  if (!isNaN(parseFloat(inputValue))) {
+    this.value = parseFloat(inputValue).toLocaleString();
+  } else {
+    this.value="";
+  }
+}
+priceInput.placeholder = "請輸入數值";
+carbontotalInput.placeholder = "請輸入數值";
+
+
 document.querySelector('#fileInput').addEventListener('change', handleFileSelect);
 
 function handleFileSelect() {
@@ -27,6 +46,9 @@ function handleFileSelect() {
 
 document.querySelector('#rcarbonForm').addEventListener('submit', function (e) {
   e.preventDefault();
+  
+  document.querySelector('#price').value = document.querySelector('#price').value.replace(/,/g, "");
+  document.querySelector('#carbontotal').value = document.querySelector('#carbontotal').value.replace(/,/g, "");
 
   let location = document.querySelector('#location').value;
   let detal = document.querySelector('#detal').value;

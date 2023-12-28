@@ -1,9 +1,11 @@
 :root {
-  --primary: #4889a2;
   --primary: #2b7591;
+  --secondary: #4889a2;
+  --orange: #f59929;
   --dark: #2c2c2c;
   --white: #F9F9F9;
 }
+
 header.blur {
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 3px 8px;
@@ -52,12 +54,27 @@ header ul li a.nav-link:hover {
   z-index: 2;
   color: #fff;
 }
-.text h2,
-.text h3 {
-  font-size: 2.5em;
+.text-orange{
+  color: var(--orange);
+}
+.text h2{
+  font-size: 4.5em;
   line-height: 1.5em;
   font-weight: 500;
 }
+@media (max-width: 1200px) {
+  .text h2 {
+    font-size: 2.2em;
+    width: 80vw;
+  }
+}
+@media (max-width: 767px) {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
 .text p {
   line-height: 1.8em;
   margin-top: 1em;
@@ -86,18 +103,14 @@ i.eye {
   max-width: 100%;
 }
 
-#about h2 ,#register h2{
+#about h2 ,#register h2, #intro h2{
   font-size: 2.5em;
   color: var(--primary);
+  font-weight: 600;
 }
-#about h3, #rcarbon h3{
-  font-size: 1.25em;
+#about h3, #rcarbon h3, #intro h3{
+  font-size: 1.45em;
   line-height: 2em;
-  color: var(--primary);
-}
-#about p.py-4 {
-  font-size: 1.3em;
-  color: var(--dark);
 }
 #about p.my-3{
   line-height: 1.8em;
@@ -108,4 +121,48 @@ i.eye {
   border-left: 6px solid var(--dark);
   padding-left: 10px;
   font-size: 1.4em;
+}
+.about-title{
+  color: #f59929;
+}
+.about-text{
+  text-align: justify;
+  color: var(--dark);
+  font-size: 1.1em;
+}
+.intro-subtxt{
+  font-size: 1.2em;
+}
+section#about , section#intro{
+  background-image: url('../image/bg.png');
+  /* height: 80vh; */
+}
+.w-65{
+  width: 65%;
+}
+.w-80{
+  width: 80%;
+}
+.w-90{
+  width: 85%;
+}
+.bluer{
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 3px 8px;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+/* section#intro{
+  height: 100vh;
+  background-image: url('../image/blob-scatter-haikei.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+} */
+footer{
+  height: 8vh;
+  display: grid;
+  place-items: center;
+  background-color: var(--primary);
+  font-size: 1.2em;
+  color: #fff;
 }

@@ -11,7 +11,7 @@ if (isset($_SESSION['account'])) {
         $stmt = $pdo->prepare("UPDATE carbontotal SET recall = '是' WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        header('Location: admin.php');
+        header('Location: state');
         echo json_encode(["status" => "success"]);
         exit();
     } 

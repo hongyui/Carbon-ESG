@@ -1,0 +1,155 @@
+
+
+
+
+
+
+
+
+
+
+      <div class="tab-content" id="pills-tabContent">
+          <div id="pills-home" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-home-tab"
+            tabindex="0">
+            <?php if($role == 1):?>
+            <?php foreach($adminData as $result):?>
+            <?php include('./templates/rcarbonInfos.php')?>
+            <?php endforeach?>
+            <?php else: ?>
+            <?php foreach($userData as $result):?>
+            <div class="row align-items-center py-2 my-4 border rounded-3 shadow">
+              <div class="col-3">
+                <img src="images/<?= $result['image_path']; ?>" alt="" class="w-100"
+                  style="max-height: 260px; object-fit: cover;">
+              </div>
+              <div class="col-6">
+                <p class="py-2 h5">所在位置: <?= $result['location']; ?></p>
+                <p class="py-2 h5">細節描述: <?= $result['detal']; ?></p>
+                <p class="py-2 h5 text-danger">售價: <?= number_format($result['price']); ?>元</p>
+                <p class="py-2 h5">碳匯總量: <?= number_format($result['carbontotal']); ?>頓</p>
+                <p class="py-2 h5">購買人:<?= $result['buy_people'] ? $result['buy_people'] : '無人購買' ?></p>
+              </div>
+              <div class="col-3 align-self-end">
+                <div class="text-end">
+                  <?php if ($result['is_check'] == '否' && $result['buy_people'] == null && empty($result['recall'])) :?>
+                  <button class="btn btn-outline-danger w-50 py-2" disabled>等待審核</button>
+                  <?php elseif ($result['is_check'] == '是' && $result['buy_people'] == null &&empty($result['recall'])):?>
+                  <button class="btn btn-outline-success w-50 py-2" disabled>已審核</button>
+                  <?php elseif ($account != $result['buy_people'] && empty($result['recall'])):?>
+                  <button class="btn btn-outline-danger w-50 py-2" disabled>已售出</button>
+                  <?php else: ?>
+                  <button class="btn btn-outline-danger w-50 py-2" disabled>請重新申請</button>
+                  <?php endif; ?>
+                </div>
+              </div>
+            </div>
+            <?php endforeach?>
+            <?php foreach($isBuyresult as $result):?>
+            <?php include('./templates/rcarbonInfos.php')?>
+            <?php endforeach?>
+            <?php endif;?>
+          </div>
+          <div id="pills-profile" class="tab-pane fade" role="tabpanel" aria-labelledby="pills-profile-tab"
+            tabindex="0">
+            <?php if($role == 1):?>
+            <div class="row gap-3">
+              <?php foreach($adminjobsresult as $result):?>
+              <div class="col-lg-3 rounded border shadow">
+                <p class="px-3 py-2 h5">申請人:<?=$result['user']?></p>
+                <p class="px-3 py-2 h5">申請原因:<?=$result['reason']?></p>
+                <p class="px-3 py-2 h5">是否有經驗:<?=$result['experience']?></p>
+                <p class="px-3 py-2 h5">年齡:<?=$result['age']?></p>
+                <p class="px-3 py-2 h5">居住地(鄉鎮):<?=$result['residence']?></p>
+                <p class="px-3 py-2 h5">聯絡方式:<?=$result['contact']?></p>
+                <p class="px-3 py-2 h5">工作申請:
+                  <?=$result['isCheck']?>
+                </p>
+              </div>
+              <?php endforeach?>
+            </div>
+            <?php else: ?>
+            <div class="row gap-3">
+              <?php foreach($userjobsresult as $result):?>
+              <div class="col-lg-3 rounded border shadow">
+                <p class="px-3 py-2 h5">申請原因:<?=$result['reason']?></p>
+                <p class="px-3 py-2 h5">是否有經驗:<?=$result['experience']?></p>
+                <p class="px-3 py-2 h5">年齡:<?=$result['age']?></p>
+                <p class="px-3 py-2 h5">居住地(鄉鎮):<?=$result['residence']?></p>
+                <p class="px-3 py-2 h5">聯絡方式:<?=$result['contact']?></p>
+                <p class="px-3 py-2 h5">工作申請:<?=$result['isCheck']?></p>
+              </div>
+              <?php endforeach?>
+            </div>
+            <?php endif;?>
+          </div>
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"
+            tabindex="0">
+            <?php foreach ($jobrecallcheckresult as $result): ?>
+            <?php if ($result['is_check'] == 0): ?>
+            <div class='col-lg-3 rounded border shadow'>
+              <p class="px-3 py-2 h5">回報人員: <?= $result['account'] ?></p>
+              <p class="px-3 py-2 h5">開始時間: <br><?= $result['datetime_start'] ?></p>
+              <p class="px-3 py-2 h5">結束時間: <br><?= $result['datetime_end'] ?></p>
+              <div class="px-3 py-2 ">
+                <img class="w-50 h-50 object-cover" src="images/<?= $result['front_image_path'] ?>" alt="">
+              </div>
+              <div class="text-end px-3 py-2">
+                <button class="btn btn-outline-danger" disabled>等待審核</button>
+              </div>
+              <?php elseif ($result['is_check'] == 1): ?>
+            </div>
+            <div class='col-lg-3 rounded border shadow'>
+              <p class="px-3 py-2 h5">回報人員: <?= $result['account'] ?></p>
+              <p class="px-3 py-2 h5">開始時間: <br><?= $result['datetime_start'] ?></p>
+              <p class="px-3 py-2 h5">結束時間: <br><?= $result['datetime_end'] ?></p>
+              <div class="px-3 py-2 ">
+                <img class="w-50 h-50 object-cover" src="images/<?= $result['front_image_path'] ?>" alt="">
+              </div>
+              <div class="text-end px-3 py-2">
+                <button class="btn btn-outline-success" disabled>已審核</button>
+              </div>
+            </div>
+            <?php endif; ?>
+            <?php endforeach; ?>
+          </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+          <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+          <?php foreach ($jobrecallcheckresult as $result): ?>
+          <?php if ($result['is_check'] == 0): ?>
+          <div class='col-lg-3 rounded border shadow'>
+            <p class="px-3 py-2 h5">回報人員: <?= $result['account'] ?></p>
+            <p class="px-3 py-2 h5">開始時間: <br><?= $result['datetime_start'] ?></p>
+            <p class="px-3 py-2 h5">結束時間: <br><?= $result['datetime_end'] ?></p>
+            <div class="px-3 py-2 ">
+              <img class="w-50 h-50 object-cover" src="images/<?= $result['front_image_path'] ?>" alt="">
+            </div>
+            <div class="text-end px-3 py-2">
+              <button class="btn btn-outline-danger" disabled>等待審核</button>
+            </div>
+            <?php elseif ($result['is_check'] == 1): ?>
+          </div>
+          <div class='col-lg-3 rounded border shadow'>
+            <p class="px-3 py-2 h5">回報人員: <?= $result['account'] ?></p>
+            <p class="px-3 py-2 h5">開始時間: <br><?= $result['datetime_start'] ?></p>
+            <p class="px-3 py-2 h5">結束時間: <br><?= $result['datetime_end'] ?></p>
+            <div class="px-3 py-2 ">
+              <img class="w-50 h-50 object-cover" src="images/<?= $result['front_image_path'] ?>" alt="">
+            </div>
+            <div class="text-end px-3 py-2">
+              <button class="btn btn-outline-success" disabled>已審核</button>
+            </div>
+          </div>
+          <?php endif; ?>
+          <?php endforeach; ?>
+        </div>

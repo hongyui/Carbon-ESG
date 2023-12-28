@@ -40,9 +40,9 @@
         <div class="col-9">
           <h5>登記碳匯</h5>
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
           <input type="text" class="form-control ms-auto" placeholder="搜尋">
-        </div>
+        </div> -->
       </div>
       <button class="btn btn-outline-dark btn-reset my-5" data-bs-toggle="modal" data-bs-target="#rcarbonM">登記</button>
     </div>
@@ -72,11 +72,9 @@
               <label class="py-3" for="detal">細節描述(選填)</label>
               <input type="text" class="form-control" name="detal" id="detal">
               <label class="py-3" for="price">出售金額(元)</label>
-              <input type="text" placeholder="" class="form-control" name="price" id="price"
-                oninput="formatNumber(this)" required>
+              <input type="text" placeholder="" class="form-control" name="price" id="price" required>
               <label class="py-3" for="carbontotal">碳匯總量(噸)</label>
-              <input type="text" placeholder="" class="form-control" name="carbontotal" id="carbontotal"
-                oninput="formatNumber(this)" required>
+              <input type="text" placeholder="" class="form-control" name="carbontotal" id="carbontotal" required>
               <label class="py-3" for="cleanup">整理人員需求(是/否)</label>
               <div class="my-3">
                 <input type="radio" class="form-check-input" id="cleanup_yes" name="cleanup" value="是">
@@ -105,21 +103,18 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
+            <h3 class="modal-title fs-5 text-center" id="buyLabel">確認交易資訊</h3>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <p class="py-2 h5">賣家名稱: <?= $result['account']; ?></p>
             <p class="py-2 h5">賣家錢包地址: <span class="h6"><?= $userAddress ?></span></p>
             <p class="py-2 h5">所在位置: <?= $result['location']; ?></p>
-            <p class="py-2 h5">碳匯總量: <?= $result['carbontotal']; ?>頓</p>
-            <p class="py-2 h5 text-danger">售價: <?= $result['price']; ?>元</p>
+            <p class="py-2 h5">碳匯總量: <?= number_format($result['carbontotal']); ?>頓</p>
+            <p class="py-2 h5 text-danger">售價: <?= number_format($result['price']); ?>元</p>
             <div class="text-end">
-              <!-- <a class="btn btn-outline-danger py-2" href="javascript:void(0);"
-                onclick="updateAndAlert($result['id'])">確認購買</a> -->
               <a class="btn btn-outline-danger py-2" href="javascript:void(0);"
                 onclick="handlePurchase(<?=$result['id']?>, '<?= $userAddress ?>', '<?= $result['price']; ?>')">確認購買</a>
-
-
             </div>
           </div>
         </div>
@@ -129,6 +124,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
+            <h3 class="modal-title fs-5 text-center" id="contactsLabel">聯絡資訊</h3>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -138,8 +134,6 @@
         </div>
       </div>
     </div>
-
-
     <?php include('./templates/loginregist.php');?>
   </main>
 </body>
@@ -151,16 +145,5 @@
 <script src="./js/contract.js"></script>
 <script src="./js/script.js"></script>
 <script src="./js/rcarbon.js"></script>
-<script>
-function formatNumber(input) {
-  let number = parseFloat(input.value.replace(/,/g, ""));
-
-  if (!isNaN(number)) {
-    input.value = number.toLocaleString();
-  } else {
-    input.value = "";
-  }
-}
-</script>
 
 </html>
