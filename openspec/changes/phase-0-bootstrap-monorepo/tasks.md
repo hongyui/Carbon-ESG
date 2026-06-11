@@ -1,6 +1,6 @@
 ## 1. CLAUDE.md First
 
-- [ ] 1.1 Write `CLAUDE.md` at repo root covering: project overview, stack decisions (Laravel 12 / Next.js 16 / Sanctum / MySQL 8 / backend-mediated Web3), directory layout, naming conventions, OpenSpec discipline, local-dev quick start, security red lines
+- [x] 1.1 Write `CLAUDE.md` at repo root covering: project overview, stack decisions (Laravel 12 / Next.js 16 / Sanctum / MySQL 8 / backend-mediated Web3), directory layout, naming conventions, OpenSpec discipline, local-dev quick start, security red lines
 - [ ] 1.2 Commit as `chore: add CLAUDE.md with refactor decisions`
 
 ## 2. Backend Scaffold
