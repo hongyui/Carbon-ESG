@@ -1,13 +1,13 @@
 ## 1. Backend — Sanctum SPA Wiring
 
-- [ ] 1.1 Edit `backend/bootstrap/app.php`: inside the `withMiddleware(function (Middleware $middleware) { ... })` closure, add `$middleware->statefulApi();` so the `api` group runs Sanctum's `EnsureFrontendRequestsAreStateful`
-- [ ] 1.2 Edit `backend/app/Models/User.php`: add `use Laravel\Sanctum\HasApiTokens;` at the top and add `HasApiTokens` to the `use ...` trait list inside the class
-- [ ] 1.3 Inspect `backend/config/sanctum.php`: confirm the `stateful` array already reads `env('SANCTUM_STATEFUL_DOMAINS')`. Default config does — no edit needed, just check
-- [ ] 1.4 Update `backend/.env.example`: add `SESSION_DOMAIN=localhost` immediately after the existing `SESSION_*` lines, add `SESSION_SAME_SITE=lax`, and confirm `SANCTUM_STATEFUL_DOMAINS=localhost:3000` from phase-0 is still present
-- [ ] 1.5 Update `backend/.env` to match (copy from `.env.example` or hand-edit) so `php artisan serve` reads the new values
-- [ ] 1.6 Inspect `backend/config/cors.php`: confirm `paths` already contains both `api/*` and `sanctum/csrf-cookie` (phase-0 default); add `sanctum/csrf-cookie` if missing
-- [ ] 1.7 Smoke test: `curl -i http://localhost:8000/sanctum/csrf-cookie` returns 204 with `Set-Cookie: XSRF-TOKEN=...` and `Set-Cookie: laravel_session=...`
-- [ ] 1.8 Commit as `feat(backend): activate Sanctum SPA middleware and align session domain`
+- [x] 1.1 Edit `backend/bootstrap/app.php`: inside the `withMiddleware(function (Middleware $middleware) { ... })` closure, add `$middleware->statefulApi();` so the `api` group runs Sanctum's `EnsureFrontendRequestsAreStateful`
+- [x] 1.2 Edit `backend/app/Models/User.php`: add `use Laravel\Sanctum\HasApiTokens;` at the top and add `HasApiTokens` to the `use ...` trait list inside the class
+- [x] 1.3 Inspect `backend/config/sanctum.php`: confirm the `stateful` array already reads `env('SANCTUM_STATEFUL_DOMAINS')`. Default config does — no edit needed, just check
+- [x] 1.4 Update `backend/.env.example`: add `SESSION_DOMAIN=localhost` immediately after the existing `SESSION_*` lines, add `SESSION_SAME_SITE=lax`, and confirm `SANCTUM_STATEFUL_DOMAINS=localhost:3000` from phase-0 is still present
+- [x] 1.5 Update `backend/.env` to match (copy from `.env.example` or hand-edit) so `php artisan serve` reads the new values
+- [x] 1.6 Inspect `backend/config/cors.php`: confirm `paths` already contains both `api/*` and `sanctum/csrf-cookie` (phase-0 default); add `sanctum/csrf-cookie` if missing
+- [x] 1.7 Smoke test: `curl -i http://localhost:8000/sanctum/csrf-cookie` returns 204 with `Set-Cookie: XSRF-TOKEN=...` and `Set-Cookie: laravel_session=...`
+- [x] 1.8 Commit as `feat(backend): activate Sanctum SPA middleware and align session domain`
 
 ## 2. Backend — Auth Endpoints + Pest Coverage
 
