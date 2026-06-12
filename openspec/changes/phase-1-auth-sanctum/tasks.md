@@ -38,13 +38,13 @@
 
 ## 4. Frontend — Auth UI
 
-- [ ] 4.1 Create `frontend/app/(auth)/layout.tsx`: minimal centered container for login / register pages (server component, no auth check — it's the unauthenticated zone)
-- [ ] 4.2 Create `frontend/app/(auth)/login/page.tsx` (Client component): form with `email` + `password`, `onSubmit` calls `ensureCsrfCookie()` then `api.post('/api/login', ...)`, on success calls `useSession().setUser(response.data.user)` then `router.push('/me')`
-- [ ] 4.3 Create `frontend/app/(auth)/register/page.tsx` (Client component): form with `name` + `email` + `password` + `password_confirmation`, similar submit flow as login but POSTs `/api/register`
-- [ ] 4.4 Create `frontend/app/(protected)/layout.tsx` (Server component): call `getSessionFromCookies()`; if null, `import { redirect } from 'next/navigation'; redirect('/login')`. Otherwise render `{children}` (SessionProvider in root already has the user)
-- [ ] 4.5 Create `frontend/components/LogoutButton.tsx` (Client component): button that calls `api.post('/api/logout')` then `useSession().setUser(null)` then `router.push('/login')`
-- [ ] 4.6 Create `frontend/app/(protected)/me/page.tsx` (Server component): reads session via the layout-provided user (or call hook from within a wrapping client component), displays `<h1>Hi, {user.name}</h1>` + `<p>{user.email}</p>` + `<LogoutButton />`
-- [ ] 4.7 Commit as `feat(frontend): add login/register/me pages and protected route guard`
+- [x] 4.1 Create `frontend/app/(auth)/layout.tsx`: minimal centered container for login / register pages (server component, no auth check — it's the unauthenticated zone)
+- [x] 4.2 Create `frontend/app/(auth)/login/page.tsx` (Client component): form with `email` + `password`, `onSubmit` calls `ensureCsrfCookie()` then `api.post('/api/login', ...)`, on success calls `useSession().setUser(response.data.user)` then `router.push('/me')`
+- [x] 4.3 Create `frontend/app/(auth)/register/page.tsx` (Client component): form with `name` + `email` + `password` + `password_confirmation`, similar submit flow as login but POSTs `/api/register`
+- [x] 4.4 Create `frontend/app/(protected)/layout.tsx` (Server component): call `getSessionFromCookies()`; if null, `import { redirect } from 'next/navigation'; redirect('/login')`. Otherwise render `{children}` (SessionProvider in root already has the user)
+- [x] 4.5 Create `frontend/components/LogoutButton.tsx` (Client component): button that calls `api.post('/api/logout')` then `useSession().setUser(null)` then `router.push('/login')`
+- [x] 4.6 Create `frontend/app/(protected)/me/page.tsx` (Server component): reads session via the layout-provided user (or call hook from within a wrapping client component), displays `<h1>Hi, {user.name}</h1>` + `<p>{user.email}</p>` + `<LogoutButton />`
+- [x] 4.7 Commit as `feat(frontend): add login/register/me pages and protected route guard`
 
 ## 5. Verification — End-to-End Hands-On + Test Suites
 
