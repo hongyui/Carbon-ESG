@@ -36,8 +36,8 @@
 
 ## 5. Verification
 
-- [ ] 5.1 `docker compose config --quiet` exits 0 (compose syntax valid)
-- [ ] 5.2 `cd backend && composer install` exits 0 on a clean clone
-- [ ] 5.3 `cd backend && php artisan route:list --path=api` shows `/api/health`
-- [ ] 5.4 `cd frontend && pnpm install --frozen-lockfile` exits 0
-- [ ] 5.5 `openspec validate --all` passes (4 capability specs + 1 change)
+- [x] 5.1 `docker compose config --quiet` exits 0 (compose syntax valid)
+- [x] 5.2 `cd backend && composer install` exits 0 on a clean clone
+- [x] 5.3 `cd backend && php artisan route:list --path=api` shows `/api/health`
+- [x] 5.4 `cd frontend && pnpm install --frozen-lockfile` exits 0
+- [x] 5.5 `openspec validate --all` passes (4 capability specs + 1 change)
