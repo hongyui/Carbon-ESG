@@ -28,11 +28,11 @@
 
 ## 4. Root Tooling
 
-- [ ] 4.1 Write `docker-compose.yml` at repo root with `mysql:8`, `redis:7`, `mailhog/mailhog`; port mappings read from env (`${DB_PORT:-3306}` etc.); health checks on mysql and redis
-- [ ] 4.2 Add `.nvmrc` containing `20.19.0`
-- [ ] 4.3 Add root `.env.example` documenting docker-compose overrides (DB_*, REDIS_PORT, MAILHOG_*)
-- [ ] 4.4 Add root `.gitignore` covering `vendor/`, `node_modules/`, `.next/`, `.env`, `.env.local`, `backend/storage/*.key`, `backend/storage/framework/cache/data/*`, `.DS_Store`, etc.
-- [ ] 4.5 Commit as `chore: add docker-compose, .nvmrc, .gitignore, .env.example`
+- [x] 4.1 Write `docker-compose.yml` at repo root with `mysql:8`, `redis:7`, `mailhog/mailhog`; port mappings read from env (`${DB_PORT:-3306}` etc.); health checks on mysql and redis
+- [x] 4.2 Add `.nvmrc` containing `20.19.0`
+- [x] 4.3 Add root `.env.example` documenting docker-compose overrides (DB_*, REDIS_PORT, MAILHOG_*)
+- [x] 4.4 Add root `.gitignore` covering `vendor/`, `node_modules/`, `.next/`, `.env`, `.env.local`, `backend/storage/*.key`, `backend/storage/framework/cache/data/*`, `.DS_Store`, etc.
+- [x] 4.5 Commit as `chore: add docker-compose, .nvmrc, .gitignore, .env.example`
 
 ## 5. Verification
 

@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+
+# Environment files (各層的 .env 都不進版控,只留 .env.example)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Laravel runtime / cache / logs
+backend/storage/*.key
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/storage/logs/*.log
+backend/bootstrap/cache/*.php
+
+# SQLite(我們不用,但 Laravel starter hook 會自己 touch)
+*.sqlite
+*.sqlite-journal
+
+# Test coverage / cache
+coverage/
+.phpunit.result.cache
+.phpunit.cache/
+
+# macOS / Windows / Linux noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.idea/
+.vscode/
+*.iml
