@@ -48,15 +48,15 @@
 
 ## 5. Verification — End-to-End Hands-On + Test Suites
 
-- [ ] 5.1 Start docker stack: `docker compose up -d --wait` and confirm `docker compose ps` shows mysql + redis healthy
-- [ ] 5.2 Backend up: `cd backend && php artisan migrate && php artisan serve` (separate terminal)
-- [ ] 5.3 Frontend up: `cd frontend && pnpm dev` (separate terminal)
-- [ ] 5.4 In browser, navigate to `http://localhost:3000/me` while logged out — confirm redirect to `/login`
-- [ ] 5.5 In browser, register a new user (name / email / password / confirmation) — confirm redirect to `/me` showing the new user's name
-- [ ] 5.6 In browser DevTools Network tab, confirm `/sanctum/csrf-cookie` was called once before login/register and `Set-Cookie: XSRF-TOKEN=...` is visible
-- [ ] 5.7 In browser, click LogoutButton on `/me` — confirm redirect to `/login` and that hitting `/me` again redirects back to `/login` (session truly cleared)
-- [ ] 5.8 Login again with the registered credentials — confirm `/me` works
-- [ ] 5.9 Run `cd backend && ./vendor/bin/pest` — all phase-0 + phase-1 tests pass
-- [ ] 5.10 Run `cd frontend && pnpm install --frozen-lockfile` — exit 0
-- [ ] 5.11 Run `openspec validate --all` — `change/phase-1-auth-sanctum` + `spec/bootstrap` both pass
-- [ ] 5.12 If any fix-up needed during verification, commit as `fix(...)` then return to 5.1; otherwise no extra commit
+- [x] 5.1 Start docker stack: `docker compose up -d --wait` and confirm `docker compose ps` shows mysql + redis healthy
+- [x] 5.2 Backend up: `cd backend && php artisan migrate && php artisan serve` (separate terminal)
+- [x] 5.3 Frontend up: `cd frontend && pnpm dev` (separate terminal)
+- [x] 5.4 In browser, navigate to `http://localhost:3000/me` while logged out — confirm redirect to `/login`
+- [x] 5.5 In browser, register a new user (name / email / password / confirmation) — confirm redirect to `/me` showing the new user's name
+- [x] 5.6 In browser DevTools Network tab, confirm `/sanctum/csrf-cookie` was called once before login/register and `Set-Cookie: XSRF-TOKEN=...` is visible
+- [x] 5.7 In browser, click LogoutButton on `/me` — confirm redirect to `/login` and that hitting `/me` again redirects back to `/login` (session truly cleared)
+- [x] 5.8 Login again with the registered credentials — confirm `/me` works
+- [x] 5.9 Run `cd backend && ./vendor/bin/pest` — all phase-0 + phase-1 tests pass
+- [x] 5.10 Run `cd frontend && pnpm install --frozen-lockfile` — exit 0
+- [x] 5.11 Run `openspec validate --all` — `change/phase-1-auth-sanctum` + `spec/bootstrap` both pass
+- [x] 5.12 If any fix-up needed during verification, commit as `fix(...)` then return to 5.1; otherwise no extra commit
