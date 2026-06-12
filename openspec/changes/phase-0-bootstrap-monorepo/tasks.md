@@ -19,12 +19,12 @@
 
 ## 3. Frontend Scaffold
 
-- [ ] 3.1 Run `pnpm create next-app@latest frontend --typescript --eslint --tailwind --app --no-src-dir --import-alias="@/*" --use-pnpm --yes`
-- [ ] 3.2 Replace default `app/page.tsx` with a minimal "Hello, Carbon-ESG" homepage surfacing `NEXT_PUBLIC_API_URL`
-- [ ] 3.3 `pnpm add axios` and create `frontend/lib/api.ts` with `withCredentials: true`, `withXSRFToken: true`, `xsrfCookieName: "XSRF-TOKEN"`, `xsrfHeaderName: "X-XSRF-TOKEN"`, plus an `ensureCsrfCookie()` helper
-- [ ] 3.4 Add `frontend/.env.example` with `NEXT_PUBLIC_API_URL=http://localhost:8000`
-- [ ] 3.5 Add `"engines": { "node": ">=20.19.0" }` to `frontend/package.json`
-- [ ] 3.6 Commit as `feat(frontend): scaffold Next.js 16 with axios client`
+- [x] 3.1 Run `pnpm create next-app@latest frontend --typescript --eslint --tailwind --app --no-src-dir --import-alias="@/*" --use-pnpm --yes`
+- [x] 3.2 Replace default `app/page.tsx` with a minimal "Hello, Carbon-ESG" homepage surfacing `NEXT_PUBLIC_API_URL`
+- [x] 3.3 `pnpm add axios` and create `frontend/lib/api.ts` with `withCredentials: true`, `withXSRFToken: true`, `xsrfCookieName: "XSRF-TOKEN"`, `xsrfHeaderName: "X-XSRF-TOKEN"`, plus an `ensureCsrfCookie()` helper
+- [x] 3.4 Add `frontend/.env.example` with `NEXT_PUBLIC_API_URL=http://localhost:8000`
+- [x] 3.5 Add `"engines": { "node": ">=20.19.0" }` to `frontend/package.json`
+- [x] 3.6 Commit as `feat(frontend): scaffold Next.js 16 with axios client`
 
 ## 4. Root Tooling
 
