@@ -10,6 +10,20 @@ export const api = axios.create({
   xsrfHeaderName: 'X-XSRF-TOKEN',
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      typeof window !== 'undefined' &&
+      window.location.pathname !== '/login'
+    ) {
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  },
+);
+
 let csrfFetched = false;
 
 export async function ensureCsrfCookie(): Promise<void> {

@@ -28,13 +28,13 @@
 
 ## 3. Frontend — Session Foundation
 
-- [ ] 3.1 Create `frontend/lib/types/user.ts` exporting `export interface User { id: number; name: string; email: string }`
-- [ ] 3.2 Create `frontend/lib/session/server.ts` with `getSessionFromCookies()`: read incoming cookies via `next/headers`, fetch `${API_URL}/api/me` with those cookies forwarded as `Cookie` header, return `User | null` (null on 401)
-- [ ] 3.3 Create `frontend/lib/session/SessionProvider.tsx` (Client component): React context that holds `{ user: User | null, setUser: (u: User | null) => void }`, props `{ initialUser, children }`
-- [ ] 3.4 Create `frontend/lib/session/useSession.ts`: client hook reading from `SessionProvider` context, throws if used outside provider
-- [ ] 3.5 Edit `frontend/lib/api.ts`: append `api.interceptors.response.use(r => r, e => { if (e.response?.status === 401 && typeof window !== 'undefined') window.location.href = '/login'; return Promise.reject(e); })`
-- [ ] 3.6 Edit `frontend/app/layout.tsx`: make it an `async` server component, call `getSessionFromCookies()` once, wrap `{children}` in `<SessionProvider initialUser={user}>{children}</SessionProvider>`
-- [ ] 3.7 Commit as `feat(frontend): add useSession hook with SSR seed and 401 interceptor`
+- [x] 3.1 Create `frontend/lib/types/user.ts` exporting `export interface User { id: number; name: string; email: string }`
+- [x] 3.2 Create `frontend/lib/session/server.ts` with `getSessionFromCookies()`: read incoming cookies via `next/headers`, fetch `${API_URL}/api/me` with those cookies forwarded as `Cookie` header, return `User | null` (null on 401)
+- [x] 3.3 Create `frontend/lib/session/SessionProvider.tsx` (Client component): React context that holds `{ user: User | null, setUser: (u: User | null) => void }`, props `{ initialUser, children }`
+- [x] 3.4 Create `frontend/lib/session/useSession.ts`: client hook reading from `SessionProvider` context, throws if used outside provider
+- [x] 3.5 Edit `frontend/lib/api.ts`: append `api.interceptors.response.use(r => r, e => { if (e.response?.status === 401 && typeof window !== 'undefined') window.location.href = '/login'; return Promise.reject(e); })`
+- [x] 3.6 Edit `frontend/app/layout.tsx`: make it an `async` server component, call `getSessionFromCookies()` once, wrap `{children}` in `<SessionProvider initialUser={user}>{children}</SessionProvider>`
+- [x] 3.7 Commit as `feat(frontend): add useSession hook with SSR seed and 401 interceptor`
 
 ## 4. Frontend — Auth UI
 
