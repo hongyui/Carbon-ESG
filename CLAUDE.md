@@ -97,7 +97,7 @@ Carbon-ESG/
 # 1. 啟動依賴
 docker compose up -d mysql redis
 
-# 2. Backend
+# 2. Backend(以下從 repo root 跑;如果你已經在 backend/ 內,跳過 cd 那行)
 cd backend
 composer install
 cp .env.example .env
