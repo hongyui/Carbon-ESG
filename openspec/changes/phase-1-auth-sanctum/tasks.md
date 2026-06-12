@@ -11,20 +11,20 @@
 
 ## 2. Backend — Auth Endpoints + Pest Coverage
 
-- [ ] 2.1 `mkdir -p backend/app/Http/Requests/Auth` and create `RegisterRequest.php` with rules: `name: required|string|max:255`, `email: required|email|unique:users`, `password: required|confirmed|min:8`
-- [ ] 2.2 In the same dir create `LoginRequest.php` with rules: `email: required|email`, `password: required|string`
-- [ ] 2.3 `mkdir -p backend/app/Http/Controllers/Auth` and create `AuthController.php` with empty methods `register`, `login`, `logout`, `me`
-- [ ] 2.4 Implement `register(RegisterRequest $request)`: `User::create([...validated, 'password' => $validated['password']])` (Laravel 11 `hashed` cast auto-bcrypts), `Auth::login($user)`, return 201 with `['user' => $user->only(['id', 'name', 'email'])]`
-- [ ] 2.5 Implement `login(LoginRequest $request)`: if `Auth::attempt($request->only('email', 'password'))` succeeds, `$request->session()->regenerate()`, return 200 with user; otherwise throw `ValidationException` mapped to 401 with generic `auth.failed` message
-- [ ] 2.6 Implement `logout(Request $request)`: `Auth::guard('web')->logout()`, `$request->session()->invalidate()`, `$request->session()->regenerateToken()`, return `response()->noContent()` (204)
-- [ ] 2.7 Implement `me(Request $request)`: return `['user' => $request->user()->only(['id', 'name', 'email'])]`
-- [ ] 2.8 Add routes to `backend/routes/api.php` under no middleware: `Route::post('/register', [AuthController::class, 'register'])`, `Route::post('/login', [AuthController::class, 'login'])`. Add under `Route::middleware('auth:sanctum')->group(function() { ... })`: `POST /logout`, `GET /me`
-- [ ] 2.9 Create `backend/tests/Feature/Auth/RegisterTest.php` (Pest): happy path returns 201 + sets cookie + `me` returns same user; duplicate email returns 422
-- [ ] 2.10 Create `backend/tests/Feature/Auth/LoginTest.php` (Pest): happy path returns 200 + sets cookie; wrong password returns 401 with generic message; missing fields return 422
-- [ ] 2.11 Create `backend/tests/Feature/Auth/LogoutTest.php` (Pest): authenticated logout returns 204 + subsequent `me` returns 401; anonymous logout returns 401
-- [ ] 2.12 Create `backend/tests/Feature/Auth/MeTest.php` (Pest): authenticated returns user; anonymous returns 401
-- [ ] 2.13 Run `./vendor/bin/pest tests/Feature/Auth` and confirm all 8+ tests pass
-- [ ] 2.14 Commit as `feat(backend): add Sanctum SPA auth endpoints with Pest coverage`
+- [x] 2.1 `mkdir -p backend/app/Http/Requests/Auth` and create `RegisterRequest.php` with rules: `name: required|string|max:255`, `email: required|email|unique:users`, `password: required|confirmed|min:8`
+- [x] 2.2 In the same dir create `LoginRequest.php` with rules: `email: required|email`, `password: required|string`
+- [x] 2.3 `mkdir -p backend/app/Http/Controllers/Auth` and create `AuthController.php` with empty methods `register`, `login`, `logout`, `me`
+- [x] 2.4 Implement `register(RegisterRequest $request)`: `User::create([...validated, 'password' => $validated['password']])` (Laravel 11 `hashed` cast auto-bcrypts), `Auth::login($user)`, return 201 with `['user' => $user->only(['id', 'name', 'email'])]`
+- [x] 2.5 Implement `login(LoginRequest $request)`: if `Auth::attempt($request->only('email', 'password'))` succeeds, `$request->session()->regenerate()`, return 200 with user; otherwise throw `ValidationException` mapped to 401 with generic `auth.failed` message
+- [x] 2.6 Implement `logout(Request $request)`: `Auth::guard('web')->logout()`, `$request->session()->invalidate()`, `$request->session()->regenerateToken()`, return `response()->noContent()` (204)
+- [x] 2.7 Implement `me(Request $request)`: return `['user' => $request->user()->only(['id', 'name', 'email'])]`
+- [x] 2.8 Add routes to `backend/routes/api.php` under no middleware: `Route::post('/register', [AuthController::class, 'register'])`, `Route::post('/login', [AuthController::class, 'login'])`. Add under `Route::middleware('auth:sanctum')->group(function() { ... })`: `POST /logout`, `GET /me`
+- [x] 2.9 Create `backend/tests/Feature/Auth/RegisterTest.php` (Pest): happy path returns 201 + sets cookie + `me` returns same user; duplicate email returns 422
+- [x] 2.10 Create `backend/tests/Feature/Auth/LoginTest.php` (Pest): happy path returns 200 + sets cookie; wrong password returns 401 with generic message; missing fields return 422
+- [x] 2.11 Create `backend/tests/Feature/Auth/LogoutTest.php` (Pest): authenticated logout returns 204 + subsequent `me` returns 401; anonymous logout returns 401
+- [x] 2.12 Create `backend/tests/Feature/Auth/MeTest.php` (Pest): authenticated returns user; anonymous returns 401
+- [x] 2.13 Run `./vendor/bin/pest tests/Feature/Auth` and confirm all 8+ tests pass
+- [x] 2.14 Commit as `feat(backend): add Sanctum SPA auth endpoints with Pest coverage`
 
 ## 3. Frontend — Session Foundation
 
