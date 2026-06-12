@@ -16,7 +16,7 @@ After this change the repository SHALL contain exactly three top-level directori
 - **THEN** `legacy/` retains every file it had at commit `f052705` with git history preserved
 
 ### Requirement: Local Dependency Stack via Docker Compose
-The repo root SHALL contain a `docker-compose.yml` defining `mysql:8`, `redis:7`, and `mailhog/mailhog` services so contributors can boot the full local stack with one command. Compose port mappings MUST read from environment variables so contributors can override defaults without editing the compose file.
+The repo root SHALL contain a `docker-compose.yml` defining `mysql:8`, `redis:7`, and `axllent/mailpit` services (mailpit is the actively-maintained, multi-arch successor to MailHog — native arm64 image avoids qemu emulation on Apple Silicon) so contributors can boot the full local stack with one command. Compose port mappings MUST read from environment variables so contributors can override defaults without editing the compose file.
 
 #### Scenario: Compose up boots required services
 - **WHEN** a developer runs `docker compose up -d mysql redis`

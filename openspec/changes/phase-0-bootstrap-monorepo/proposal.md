@@ -8,7 +8,7 @@ This is the first OpenSpec change of the rewrite. Subsequent phases (`phase-1-au
 
 - Scaffold Laravel 12 at `/backend` via `composer create-project`. Install Sanctum and Pest as dev tooling. Configure CORS for the SPA frontend and set MySQL as the default DB connection.
 - Scaffold Next.js 16 at `/frontend` via `pnpm create next-app` with TypeScript, App Router, ESLint, and Tailwind v4. Add a Sanctum-aware axios client at `lib/api.ts`.
-- Add `docker-compose.yml` at the repo root with `mysql:8`, `redis:7`, and `mailhog/mailhog` services so contributors can boot the full local dependency stack in one command.
+- Add `docker-compose.yml` at the repo root with `mysql:8`, `redis:7`, and `axllent/mailpit` services so contributors can boot the full local dependency stack in one command.
 - Add root tooling: `.nvmrc` (Node 20.19.0), `.env.example` (docker-compose overrides), `.gitignore` (covers `vendor/`, `node_modules/`, `.env`, etc.).
 - Add `CLAUDE.md` at repo root documenting the refactor decisions (Laravel 12 + Next.js 16 + Sanctum + MySQL + backend-mediated Web3) and the OpenSpec discipline that every cross-file change must follow.
 
