@@ -1,22 +1,20 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from '@/lib/session/SessionProvider';
 import { getSessionFromCookies } from '@/lib/session/server';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const jakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
-  title: 'Carbon-ESG',
-  description: 'Carbon credits trading platform',
+  title: 'Carbon-ESG · 碳權交易整合平台',
+  description:
+    '把土地、碳匯、買家、執行者接在同一條鏈上 — Carbon-ESG 讓減碳變成可交易、可追蹤、可驗證的價值。',
 };
 
 export default async function RootLayout({
@@ -27,10 +25,7 @@ export default async function RootLayout({
   const user = await getSessionFromCookies();
 
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="zh-Hant-TW" className={`${jakarta.variable} antialiased`}>
       <body className="min-h-full flex flex-col">
         <SessionProvider initialUser={user}>{children}</SessionProvider>
       </body>
