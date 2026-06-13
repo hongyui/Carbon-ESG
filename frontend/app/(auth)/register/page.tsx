@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { api, ensureCsrfCookie } from '@/lib/api';
 import { useSession } from '@/lib/session/SessionProvider';
 import type { User } from '@/lib/types/user';
+import { Button } from '@/components/ui/Button';
+import { Field } from '@/components/ui/Field';
 
 interface RegisterForm {
   name: string;
@@ -53,7 +55,7 @@ export default function RegisterPage() {
       } else {
         const message =
           (err as { response?: { data?: { message?: string } } }).response?.data
-            ?.message ?? 'Registration failed';
+            ?.message ?? '建立帳號失敗,請稍後再試。';
         setError(message);
       }
     } finally {
@@ -62,64 +64,72 @@ export default function RegisterPage() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">Create account</h1>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Name</span>
-        <input
+    <form onSubmit={onSubmit} className="flex flex-col gap-6">
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+          建立帳號
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600">
+          已經有帳號了?{' '}
+          <Link
+            href="/login"
+            className="font-medium text-emerald-700 underline-offset-4 hover:underline"
+          >
+            登入
+          </Link>
+        </p>
+      </header>
+
+      <div className="flex flex-col gap-4">
+        <Field
+          label="姓名"
           type="text"
+          autoComplete="name"
           required
           value={form.name}
           onChange={(e) => update('name', e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Email</span>
-        <input
+        <Field
+          label="電子郵件"
           type="email"
+          autoComplete="email"
           required
           value={form.email}
           onChange={(e) => update('email', e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Password (min 8 chars)</span>
-        <input
+        <Field
+          label="密碼"
           type="password"
+          autoComplete="new-password"
           required
           minLength={8}
           value={form.password}
           onChange={(e) => update('password', e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
+          hint="至少 8 個字元"
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Confirm password</span>
-        <input
+        <Field
+          label="確認密碼"
           type="password"
+          autoComplete="new-password"
           required
           minLength={8}
           value={form.password_confirmation}
           onChange={(e) => update('password_confirmation', e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
         />
-      </label>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded bg-zinc-900 px-4 py-2 text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
-      >
-        {submitting ? 'Creating…' : 'Create account'}
-      </button>
-      <p className="text-sm text-zinc-500">
-        Already have one?{' '}
-        <Link href="/login" className="underline">
-          Sign in
-        </Link>
-      </p>
+      </div>
+
+      {error && (
+        <p
+          role="alert"
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700"
+        >
+          {error}
+        </p>
+      )}
+
+      <Button type="submit" disabled={submitting} className="mt-1 w-full">
+        {submitting ? '建立中⋯' : '建立帳號'}
+      </Button>
     </form>
   );
 }

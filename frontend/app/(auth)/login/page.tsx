@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { api, ensureCsrfCookie } from '@/lib/api';
 import { useSession } from '@/lib/session/SessionProvider';
 import type { User } from '@/lib/types/user';
+import { Button } from '@/components/ui/Button';
+import { Field } from '@/components/ui/Field';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,7 +33,7 @@ export default function LoginPage() {
     } catch (err) {
       const message =
         (err as { response?: { data?: { message?: string } } }).response?.data
-          ?.message ?? 'Sign in failed';
+          ?.message ?? '登入失敗,請確認帳號密碼是否正確。';
       setError(message);
     } finally {
       setSubmitting(false);
@@ -39,42 +41,53 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">Sign in</h1>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Email</span>
-        <input
+    <form onSubmit={onSubmit} className="flex flex-col gap-6">
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+          登入
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600">
+          還沒有帳號?{' '}
+          <Link
+            href="/register"
+            className="font-medium text-emerald-700 underline-offset-4 hover:underline"
+          >
+            建立帳號
+          </Link>
+        </p>
+      </header>
+
+      <div className="flex flex-col gap-4">
+        <Field
+          label="電子郵件"
           type="email"
+          autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
         />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-sm">Password</span>
-        <input
+        <Field
+          label="密碼"
           type="password"
+          autoComplete="current-password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-700"
         />
-      </label>
-      {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting}
-        className="rounded bg-zinc-900 px-4 py-2 text-white disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
-      >
-        {submitting ? 'Signing in…' : 'Sign in'}
-      </button>
-      <p className="text-sm text-zinc-500">
-        No account?{' '}
-        <Link href="/register" className="underline">
-          Register
-        </Link>
-      </p>
+      </div>
+
+      {error && (
+        <p
+          role="alert"
+          className="rounded-md border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700"
+        >
+          {error}
+        </p>
+      )}
+
+      <Button type="submit" disabled={submitting} className="mt-1 w-full">
+        {submitting ? '登入中⋯' : '登入'}
+      </Button>
     </form>
   );
 }

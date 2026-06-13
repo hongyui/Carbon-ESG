@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useSession } from '@/lib/session/SessionProvider';
+import { Button } from '@/components/ui/Button';
 
 export function LogoutButton() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export function LogoutButton() {
     try {
       await api.post('/api/logout');
     } catch {
-      // ignore network/401 — still clear local state below
+      // ignore network/401; still clear local state below
     }
     setUser(null);
     router.push('/login');
@@ -20,11 +21,8 @@ export function LogoutButton() {
   }
 
   return (
-    <button
-      onClick={onClick}
-      className="rounded border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700"
-    >
-      Sign out
-    </button>
+    <Button variant="ghost" onClick={onClick}>
+      登出
+    </Button>
   );
 }
