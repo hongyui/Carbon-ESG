@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getSessionFromCookies } from '@/lib/session/server';
+import { AppHeader } from '@/components/AppHeader';
 
 export default async function ProtectedLayout({
   children,
@@ -10,5 +11,10 @@ export default async function ProtectedLayout({
   if (!user) {
     redirect('/login');
   }
-  return <>{children}</>;
+  return (
+    <>
+      <AppHeader />
+      {children}
+    </>
+  );
 }

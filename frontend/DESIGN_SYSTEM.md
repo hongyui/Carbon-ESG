@@ -112,6 +112,11 @@ Four variants. Same height and padding across all surfaces.
 | Sign out | `登出` |
 | Submit (generic form) | `送出` |
 | Cancel | `取消` |
+| Submit carbon listing for admin review | `送出審核` |
+| Buy a carbon listing | `購買` |
+| Seller withdraws own listing | `撤回` |
+| Admin approves pending listing | `核准` |
+| Admin rejects pending listing | `退件` |
 
 Do NOT introduce "立即註冊" / "註冊一個帳號" / "Sign up" / "Sign in" variants.
 If you need a new intent, add it here first.
@@ -125,6 +130,22 @@ inline error below the hint, accessible `aria-describedby` wiring, focus ring
 ```tsx
 <Field label="電子郵件" type="email" autoComplete="email" required ... />
 <Field label="密碼" type="password" hint="至少 8 個字元" error={errors.password} />
+```
+
+### `<EmptyState>` (primitive)
+
+Empty-state for any list / queue surface (seller with no listings, buyer
+with no purchases, admin queue is empty). Props `{ icon?, title, body?, cta? }`.
+Single look across the app: dashed `border-zinc-300`, soft `bg-zinc-50`,
+centered text, optional icon above title, optional CTA below body.
+
+```tsx
+<EmptyState
+  icon={<Sprout className="h-10 w-10" />}
+  title="還沒有上架的碳匯"
+  body="把你想守護的那塊地登錄上來,等通過審核後就能進市場。"
+  cta={<Button href="/seller/listings/new">送出審核</Button>}
+/>
 ```
 
 ### `<Reveal>`

@@ -60,16 +60,16 @@
 
 ## 5. Frontend Session Enrichment + AppHeader + Primitives
 
-- [ ] 5.1 Update `frontend/lib/types/user.ts`: `User` interface gains optional `isAdmin?: boolean; isSeller?: boolean; hasPurchased?: boolean`
-- [ ] 5.2 Verify `frontend/lib/session/server.ts` `getSessionFromCookies()` continues to return the enriched payload by extracting `data.user` whole (no manual field whitelist). Add a typed test or rely on TypeScript narrowing
-- [ ] 5.3 Create `frontend/lib/api/listings.ts`: typed client with `createListing(input)`, `getMyListings()`, `getMarket(page)`, `getListing(id)`, `recallListing(id)`, `purchase(id)`, `getMyPurchases(page)`, `adminPending(page)`, `adminApprove(id)`, `adminReject(id, reason?)`. Each function returns the typed payload
-- [ ] 5.4 Create `frontend/components/AppHeader.tsx` (`'use client'`): logo + role-aware nav items (`市場` / `我的上架` / `我的購買` / `後台審核`) per spec rule, plus user dropdown with name + 登出. Reads role flags from `useSession()`. Use `<Button>` primitive for the 登出 action
-- [ ] 5.5 Update `frontend/app/(protected)/layout.tsx`: render `<AppHeader />` at the top of the protected shell, before `{children}`
-- [ ] 5.6 Create `frontend/components/ui/EmptyState.tsx` primitive: props `{ icon, title, body, cta? }`. Renders centered with consistent spacing. Use lucide-react for icon prop type
-- [ ] 5.7 Update `frontend/DESIGN_SYSTEM.md`: add `<EmptyState>` to the primitives section; add the new CTA-label locks (`送出審核` / `購買` / `撤回` / `核准` / `退件`) to the CTA-label table
-- [ ] 5.8 Update `frontend/app/(protected)/me/page.tsx`: replace the "下一步" placeholder section with quick-link buttons to `/seller/listings`, `/market`, `/purchases`, and (admin only) `/admin/review`
-- [ ] 5.9 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
-- [ ] 5.10 Commit as `feat(frontend): role-aware AppHeader + session role flags + EmptyState primitive`
+- [x] 5.1 Update `frontend/lib/types/user.ts`: `User` interface gains optional `isAdmin?: boolean; isSeller?: boolean; hasPurchased?: boolean`
+- [x] 5.2 Verify `frontend/lib/session/server.ts` `getSessionFromCookies()` continues to return the enriched payload by extracting `data.user` whole (no manual field whitelist). Add a typed test or rely on TypeScript narrowing
+- [x] 5.3 Create `frontend/lib/api/listings.ts`: typed client with `createListing(input)`, `getMyListings()`, `getMarket(page)`, `getListing(id)`, `recallListing(id)`, `purchase(id)`, `getMyPurchases(page)`, `adminPending(page)`, `adminApprove(id)`, `adminReject(id, reason?)`. Each function returns the typed payload
+- [x] 5.4 Create `frontend/components/AppHeader.tsx` (`'use client'`): logo + role-aware nav items (`市場` / `我的上架` / `我的購買` / `後台審核`) per spec rule, plus user dropdown with name + 登出. Reads role flags from `useSession()`. Use `<Button>` primitive for the 登出 action
+- [x] 5.5 Update `frontend/app/(protected)/layout.tsx`: render `<AppHeader />` at the top of the protected shell, before `{children}`
+- [x] 5.6 Create `frontend/components/ui/EmptyState.tsx` primitive: props `{ icon, title, body, cta? }`. Renders centered with consistent spacing. Use lucide-react for icon prop type
+- [x] 5.7 Update `frontend/DESIGN_SYSTEM.md`: add `<EmptyState>` to the primitives section; add the new CTA-label locks (`送出審核` / `購買` / `撤回` / `核准` / `退件`) to the CTA-label table
+- [x] 5.8 Update `frontend/app/(protected)/me/page.tsx`: replace the "下一步" placeholder section with quick-link buttons to `/seller/listings`, `/market`, `/purchases`, and (admin only) `/admin/review`
+- [x] 5.9 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
+- [x] 5.10 Commit as `feat(frontend): role-aware AppHeader + session role flags + EmptyState primitive`
 
 ## 6. Frontend Seller Surfaces
 
