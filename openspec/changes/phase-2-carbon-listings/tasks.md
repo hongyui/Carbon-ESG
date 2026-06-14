@@ -84,16 +84,16 @@
 
 ## 7. Frontend Market + Purchase + Admin Surfaces
 
-- [ ] 7.1 Create `frontend/app/(protected)/market/page.tsx`: server component fetching paginated approved listings. Render as editorial cards (adapt the landing's Field Cases card pattern: location + meta + body + price). Pagination controls at the bottom
-- [ ] 7.2 Create `frontend/app/(protected)/market/[id]/page.tsx`: detail card. If current user is the owner, replace the 購買 button with a small zinc note 「這是您自己的上架」. Otherwise show 購買 (primary button) opening a confirm dialog → calls `purchase(id)` → on success `router.push('/purchases')` and `router.refresh()`
-- [ ] 7.3 Create `frontend/app/(protected)/purchases/page.tsx`: server component fetching `/api/purchases` paginated. Render list with listing title, location, price, purchased_at. Empty state → CTA to `/market`
-- [ ] 7.4 Create `frontend/app/(protected)/admin/layout.tsx`: server component reading `getSessionFromCookies()`. If `!user.isAdmin`, call `redirect('/me')`. Otherwise `<>{children}</>`
-- [ ] 7.5 Create `frontend/app/(protected)/admin/review/page.tsx`: server component fetching `/api/admin/carbon-listings/pending`. Render each row with listing summary, 核准 primary button, 退件 ghost button. Reject opens a small inline form with optional reason `<Field>` + 退件 confirm. Both actions call the API + `router.refresh()`
-- [ ] 7.6 Add error handling on purchase race: if API returns 409, show a toast / inline error 「這筆碳匯已經被別人買走了」 instead of redirecting
-- [ ] 7.7 Hands-on flow: register a buyer user, browse /market, click a listing, click 購買, confirm. Verify listing disappears from market and appears in /purchases. Switch to an admin user (set role=admin via `php artisan tinker`), visit /admin/review, approve / reject some pending listings
-- [ ] 7.8 Hands-on flow: as a non-admin, navigate directly to /admin/review URL. Verify server-side redirect to /me with no admin content flashing
-- [ ] 7.9 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
-- [ ] 7.10 Commit as `feat(frontend): add market browse + purchase history + admin review surfaces`
+- [x] 7.1 Create `frontend/app/(protected)/market/page.tsx`: server component fetching paginated approved listings. Render as editorial cards (adapt the landing's Field Cases card pattern: location + meta + body + price). Pagination controls at the bottom
+- [x] 7.2 Create `frontend/app/(protected)/market/[id]/page.tsx`: detail card. If current user is the owner, replace the 購買 button with a small zinc note 「這是您自己的上架」. Otherwise show 購買 (primary button) opening a confirm dialog → calls `purchase(id)` → on success `router.push('/purchases')` and `router.refresh()`
+- [x] 7.3 Create `frontend/app/(protected)/purchases/page.tsx`: server component fetching `/api/purchases` paginated. Render list with listing title, location, price, purchased_at. Empty state → CTA to `/market`
+- [x] 7.4 Create `frontend/app/(protected)/admin/layout.tsx`: server component reading `getSessionFromCookies()`. If `!user.isAdmin`, call `redirect('/me')`. Otherwise `<>{children}</>`
+- [x] 7.5 Create `frontend/app/(protected)/admin/review/page.tsx`: server component fetching `/api/admin/carbon-listings/pending`. Render each row with listing summary, 核准 primary button, 退件 ghost button. Reject opens a small inline form with optional reason `<Field>` + 退件 confirm. Both actions call the API + `router.refresh()`
+- [x] 7.6 Add error handling on purchase race: if API returns 409, show a toast / inline error 「這筆碳匯已經被別人買走了」 instead of redirecting
+- [x] 7.7 Hands-on flow: register a buyer user, browse /market, click a listing, click 購買, confirm. Verify listing disappears from market and appears in /purchases. Switch to an admin user (set role=admin via `php artisan tinker`), visit /admin/review, approve / reject some pending listings
+- [x] 7.8 Hands-on flow: as a non-admin, navigate directly to /admin/review URL. Verify server-side redirect to /me with no admin content flashing
+- [x] 7.9 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
+- [x] 7.10 Commit as `feat(frontend): add market browse + purchase history + admin review surfaces`
 
 ## 8. Verification
 
