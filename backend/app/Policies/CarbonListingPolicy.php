@@ -21,6 +21,11 @@ class CarbonListingPolicy
         return true;
     }
 
+    public function viewAdminQueue(User $user): bool
+    {
+        return $user->isAdmin();
+    }
+
     public function recall(User $user, CarbonListing $listing): bool
     {
         return $user->id === $listing->user_id
