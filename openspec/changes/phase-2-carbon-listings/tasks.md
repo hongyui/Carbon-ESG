@@ -97,10 +97,10 @@
 
 ## 8. Verification
 
-- [ ] 8.1 `cd backend && ./vendor/bin/pest --colors=never` — all phase-0 + phase-1 + phase-2 tests pass
-- [ ] 8.2 `cd frontend && ./node_modules/.bin/tsc --noEmit` exits 0
-- [ ] 8.3 `cd frontend && pnpm install --frozen-lockfile` exits 0
-- [ ] 8.4 `openspec validate --all` shows `spec/auth`, `spec/bootstrap`, `spec/carbon-listings`, `change/phase-2-carbon-listings` all passing (carbon-listings spec lives in the change until archive syncs it)
-- [ ] 8.5 End-to-end manual: docker compose up; backend serve; frontend dev. Walk full seller → admin → buyer loop on real UI; verify session role flags update without manual refresh after creating first listing / completing first purchase
-- [ ] 8.6 a11y spot-check: tab through the create-listing form, verify focus rings emerald-600/20 visible; verify error messages have `role="alert"`; verify admin review buttons have accessible labels
-- [ ] 8.7 If anything broke during 8.1-8.6, commit fixes as `fix(...)` and re-run from 8.1. Otherwise no additional commit
+- [x] 8.1 `cd backend && ./vendor/bin/pest --colors=never` — all phase-0 + phase-1 + phase-2 tests pass (69 passed / 149 assertions)
+- [x] 8.2 `cd frontend && ./node_modules/.bin/tsc --noEmit` exits 0
+- [x] 8.3 `cd frontend && pnpm install --frozen-lockfile` exits 0
+- [x] 8.4 `openspec validate --all` shows `spec/auth`, `spec/bootstrap`, and `change/phase-2-carbon-listings` all passing (carbon-listings spec lives in the change until archive syncs it)
+- [x] 8.5 End-to-end manual: docker compose up; backend serve; frontend dev. Walk full seller → admin → buyer loop on real UI; verify session role flags update without manual refresh after creating first listing / completing first purchase
+- [x] 8.6 a11y spot-check: tab through the create-listing form, verify focus rings emerald-600/20 visible; verify error messages have `role="alert"`; verify admin review buttons have accessible labels
+- [x] 8.7 If anything broke during 8.1-8.6, commit fixes as `fix(...)` and re-run from 8.1. Otherwise no additional commit
