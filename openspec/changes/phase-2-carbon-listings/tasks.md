@@ -1,9 +1,9 @@
 ## 1. Database Schema
 
-- [ ] 1.1 Create migration `create_carbon_listings_table.php` with columns per spec: `id`, `user_id` FK (cascade), `title` string, `description` text, `hectares` decimal(8,2), `tonnes_co2e` decimal(10,2), `location` string, `price_twd` decimal(12,2), `status` string (default `pending`), `admin_note` text nullable, `approved_by` FK users.id nullable, `approved_at` timestamp nullable, `timestamps()`
-- [ ] 1.2 Create migration `create_carbon_purchases_table.php` with `id`, `carbon_listing_id` FK (cascade) **UNIQUE**, `buyer_id` FK users.id, `price_twd` decimal(12,2), `timestamps()`
-- [ ] 1.3 Run `cd backend && php artisan migrate` against docker mysql; verify both tables present via `php artisan tinker --execute="echo Schema::hasTable('carbon_listings'); echo Schema::hasTable('carbon_purchases');"`
-- [ ] 1.4 Commit as `feat(backend): add carbon_listings + carbon_purchases migrations`
+- [x] 1.1 Create migration `create_carbon_listings_table.php` with columns per spec: `id`, `user_id` FK (cascade), `title` string, `description` text, `hectares` decimal(8,2), `tonnes_co2e` decimal(10,2), `location` string, `price_twd` decimal(12,2), `status` string (default `pending`), `admin_note` text nullable, `approved_by` FK users.id nullable, `approved_at` timestamp nullable, `timestamps()`
+- [x] 1.2 Create migration `create_carbon_purchases_table.php` with `id`, `carbon_listing_id` FK (cascade) **UNIQUE**, `buyer_id` FK users.id, `price_twd` decimal(12,2), `timestamps()`
+- [x] 1.3 Run `cd backend && php artisan migrate` against docker mysql; verify both tables present via `php artisan tinker --execute="echo Schema::hasTable('carbon_listings'); echo Schema::hasTable('carbon_purchases');"`
+- [x] 1.4 Commit as `feat(backend): add carbon_listings + carbon_purchases migrations`
 
 ## 2. Models, Policies, Role Inference, /me Enrichment
 
