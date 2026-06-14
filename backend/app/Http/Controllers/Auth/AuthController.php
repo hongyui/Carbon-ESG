@@ -51,17 +51,26 @@ class AuthController extends Controller
         return response()->noContent();
     }
 
+    public function me(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'user' => array_merge(
+                $user->only(['id', 'name', 'email']),
+                [
+                    'isAdmin' => $user->isAdmin(),
+                    'isSeller' => $user->isSeller(),
+                    'hasPurchased' => $user->hasPurchased(),
+                ],
+            ),
+        ]);
+    }
+
     private function rotateSession(Request $request): void
     {
         if ($request->hasSession()) {
             $request->session()->regenerate();
         }
-    }
-
-    public function me(Request $request): JsonResponse
-    {
-        return response()->json([
-            'user' => $request->user()->only(['id', 'name', 'email']),
-        ]);
     }
 }

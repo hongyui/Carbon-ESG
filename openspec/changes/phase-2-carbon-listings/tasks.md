@@ -7,21 +7,21 @@
 
 ## 2. Models, Policies, Role Inference, /me Enrichment
 
-- [ ] 2.1 Create `app/Models/CarbonListing.php` with `$fillable`, `$casts` (`hectares` / `tonnes_co2e` / `price_twd` → decimal; `approved_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` / `STATUS_RECALLED` / `STATUS_SOLD` class constants
-- [ ] 2.2 Implement `CarbonListing::transitionTo(string $newStatus, array $extras = []): void` with the allowed-transition map from the spec. On `approved`, stamp `approved_by` from `Auth::id()` and `approved_at = now()`. On `rejected`, store `$extras['admin_note']` if present
-- [ ] 2.3 Create `app/Exceptions/InvalidStateTransition.php` extending `RuntimeException`
-- [ ] 2.4 Register a `static::saving()` boot listener on `CarbonListing` that, when `status` is dirty, asserts the original→dirty transition is in the allowed map; throws `InvalidStateTransition` if not. Guards against direct `$listing->status = ...; $listing->save()`
-- [ ] 2.5 Create `app/Models/CarbonPurchase.php` with `$fillable`, `belongsTo(CarbonListing)`, `belongsTo(User, 'buyer_id')`
-- [ ] 2.6 Add `User::carbonListings()` (hasMany), `User::purchases()` (hasMany on `buyer_id`)
-- [ ] 2.7 Add `User::isAdmin(): bool` (reads `role === 'admin'`), `User::isSeller(): bool` (`->carbonListings()->exists()`), `User::hasPurchased(): bool` (`->purchases()->exists()`)
-- [ ] 2.8 Create `app/Policies/CarbonListingPolicy.php` with `view`, `create`, `recall`, `purchase`, `approve`, `reject` methods per spec
-- [ ] 2.9 Register the policy in `app/Providers/AppServiceProvider::boot()` via `Gate::policy(CarbonListing::class, CarbonListingPolicy::class)`
-- [ ] 2.10 Extend `AuthController::me()`: change the response payload from `['user' => $user->only([...])]` to spread role flags `isAdmin` / `isSeller` / `hasPurchased` into the user object
-- [ ] 2.11 Update `tests/Feature/Auth/MeTest.php`: extend the happy-path assertion to include the three role flag fields
-- [ ] 2.12 New `tests/Feature/CarbonListings/UserRoleInferenceTest.php`: fixtures for (no rows, has listing, has purchase, both) × assert each helper boolean
-- [ ] 2.13 New `tests/Feature/CarbonListings/StateMachineTest.php`: walk every allowed transition with `transitionTo()`; assert each disallowed transition throws `InvalidStateTransition`; assert direct `$listing->status = ...; $listing->save()` is also caught by the saving listener
-- [ ] 2.14 Run `./vendor/bin/pest tests/Feature/CarbonListings tests/Feature/Auth/MeTest.php` — all pass
-- [ ] 2.15 Commit as `feat(backend): add CarbonListing model with state machine, policy, role helpers, /me role flags`
+- [x] 2.1 Create `app/Models/CarbonListing.php` with `$fillable`, `$casts` (`hectares` / `tonnes_co2e` / `price_twd` → decimal; `approved_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` / `STATUS_RECALLED` / `STATUS_SOLD` class constants
+- [x] 2.2 Implement `CarbonListing::transitionTo(string $newStatus, array $extras = []): void` with the allowed-transition map from the spec. On `approved`, stamp `approved_by` from `Auth::id()` and `approved_at = now()`. On `rejected`, store `$extras['admin_note']` if present
+- [x] 2.3 Create `app/Exceptions/InvalidStateTransition.php` extending `RuntimeException`
+- [x] 2.4 Register a `static::saving()` boot listener on `CarbonListing` that, when `status` is dirty, asserts the original→dirty transition is in the allowed map; throws `InvalidStateTransition` if not. Guards against direct `$listing->status = ...; $listing->save()`
+- [x] 2.5 Create `app/Models/CarbonPurchase.php` with `$fillable`, `belongsTo(CarbonListing)`, `belongsTo(User, 'buyer_id')`
+- [x] 2.6 Add `User::carbonListings()` (hasMany), `User::purchases()` (hasMany on `buyer_id`)
+- [x] 2.7 Add `User::isAdmin(): bool` (reads `role === 'admin'`), `User::isSeller(): bool` (`->carbonListings()->exists()`), `User::hasPurchased(): bool` (`->purchases()->exists()`)
+- [x] 2.8 Create `app/Policies/CarbonListingPolicy.php` with `view`, `create`, `recall`, `purchase`, `approve`, `reject` methods per spec
+- [x] 2.9 Register the policy in `app/Providers/AppServiceProvider::boot()` via `Gate::policy(CarbonListing::class, CarbonListingPolicy::class)`
+- [x] 2.10 Extend `AuthController::me()`: change the response payload from `['user' => $user->only([...])]` to spread role flags `isAdmin` / `isSeller` / `hasPurchased` into the user object
+- [x] 2.11 Update `tests/Feature/Auth/MeTest.php`: extend the happy-path assertion to include the three role flag fields
+- [x] 2.12 New `tests/Feature/CarbonListings/UserRoleInferenceTest.php`: fixtures for (no rows, has listing, has purchase, both) × assert each helper boolean
+- [x] 2.13 New `tests/Feature/CarbonListings/StateMachineTest.php`: walk every allowed transition with `transitionTo()`; assert each disallowed transition throws `InvalidStateTransition`; assert direct `$listing->status = ...; $listing->save()` is also caught by the saving listener
+- [x] 2.14 Run `./vendor/bin/pest tests/Feature/CarbonListings tests/Feature/Auth/MeTest.php` — all pass
+- [x] 2.15 Commit as `feat(backend): add CarbonListing model with state machine, policy, role helpers, /me role flags`
 
 ## 3. Backend Seller Endpoints + Pest
 
