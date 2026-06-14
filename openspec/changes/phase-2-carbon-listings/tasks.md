@@ -73,14 +73,14 @@
 
 ## 6. Frontend Seller Surfaces
 
-- [ ] 6.1 Create `frontend/app/(protected)/seller/layout.tsx` as a thin pass-through (`return <>{children}</>`)
-- [ ] 6.2 Create `frontend/app/(protected)/seller/listings/new/page.tsx`: `'use client'` form using `<Field>` × 6 (title / description / hectares / tonnes_co2e / location / price_twd). Submit calls `createListing()`. Success → `router.push('/seller/listings')`. Error → red error block per design system
-- [ ] 6.3 Create `frontend/app/(protected)/seller/listings/page.tsx`: server component fetching `/api/carbon-listings/mine`. Render in 2-col grid. If empty, render `<EmptyState>` with CTA to `/seller/listings/new`
-- [ ] 6.4 Create `frontend/components/StatusBadge.tsx`: takes `status: 'pending'|'approved'|...`, renders a color-coded pill (zinc for pending; emerald for approved; red for rejected; amber for recalled; emerald-dark for sold) with the Chinese label (`審核中` / `已核准` / `已退件` / `已撤回` / `已售出`)
-- [ ] 6.5 Create `frontend/app/(protected)/seller/listings/[id]/page.tsx`: detail card showing all listing fields + `<StatusBadge>`. If status is pending or approved, show a `撤回` ghost button that opens a confirm dialog. Click confirm → call `recallListing(id)` → router.refresh()
-- [ ] 6.6 Hands-on flow: log in as a fresh user, navigate to /seller/listings, see empty state. Click `送出審核`, fill form, submit. See the new listing in /seller/listings with `審核中` badge. Open detail, click 撤回, confirm, see status flip to `已撤回`
-- [ ] 6.7 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
-- [ ] 6.8 Commit as `feat(frontend): add seller listing surfaces (new + my listings + detail + recall)`
+- [x] 6.1 Create `frontend/app/(protected)/seller/layout.tsx` as a thin pass-through (`return <>{children}</>`)
+- [x] 6.2 Create `frontend/app/(protected)/seller/listings/new/page.tsx`: `'use client'` form using `<Field>` × 6 (title / description / hectares / tonnes_co2e / location / price_twd). Submit calls `createListing()`. Success → `router.push('/seller/listings')`. Error → red error block per design system
+- [x] 6.3 Create `frontend/app/(protected)/seller/listings/page.tsx`: server component fetching `/api/carbon-listings/mine`. Render in 2-col grid. If empty, render `<EmptyState>` with CTA to `/seller/listings/new`
+- [x] 6.4 Create `frontend/components/StatusBadge.tsx`: takes `status: 'pending'|'approved'|...`, renders a color-coded pill (zinc for pending; emerald for approved; red for rejected; amber for recalled; emerald-dark for sold) with the Chinese label (`審核中` / `已核准` / `已退件` / `已撤回` / `已售出`)
+- [x] 6.5 Create `frontend/app/(protected)/seller/listings/[id]/page.tsx`: detail card showing all listing fields + `<StatusBadge>`. If status is pending or approved, show a `撤回` ghost button that opens a confirm dialog. Click confirm → call `recallListing(id)` → router.refresh()
+- [x] 6.6 Hands-on flow: log in as a fresh user, navigate to /seller/listings, see empty state. Click `送出審核`, fill form, submit. See the new listing in /seller/listings with `審核中` badge. Open detail, click 撤回, confirm, see status flip to `已撤回`
+- [x] 6.7 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
+- [x] 6.8 Commit as `feat(frontend): add seller listing surfaces (new + my listings + detail + recall)`
 
 ## 7. Frontend Market + Purchase + Admin Surfaces
 
