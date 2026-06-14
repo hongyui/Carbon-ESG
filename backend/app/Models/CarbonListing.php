@@ -41,6 +41,16 @@ class CarbonListing extends Model
         self::STATUS_SOLD => [],
     ];
 
+    /**
+     * Model-level defaults so a freshly mass-assigned listing carries
+     * `status = pending` in memory (matching the migration default).
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'status' => self::STATUS_PENDING,
+    ];
+
     protected $fillable = [
         'user_id',
         'title',

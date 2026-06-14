@@ -25,19 +25,19 @@
 
 ## 3. Backend Seller Endpoints + Pest
 
-- [ ] 3.1 Create `app/Http/Requests/CarbonListings/CreateRequest.php` with rules: `title required|string|max:255`, `description required|string`, `hectares required|numeric|gt:0`, `tonnes_co2e required|numeric|gt:0`, `location required|string|max:255`, `price_twd required|numeric|gt:0`
-- [ ] 3.2 Create `app/Http/Controllers/CarbonListingController.php` with `store(CreateRequest)`, `mine(Request)`, `show(CarbonListing)`, `recall(CarbonListing)` methods
-- [ ] 3.3 In `store`: `CarbonListing::create([...$validated, 'user_id' => $request->user()->id])`; return 201 with the listing
-- [ ] 3.4 In `mine`: `$request->user()->carbonListings()->latest()->get()`; return as `{ listings: [...] }`
-- [ ] 3.5 In `show`: `$this->authorize('view', $listing)`; return as `{ listing: {...} }`
-- [ ] 3.6 In `recall`: `$this->authorize('recall', $listing); $listing->transitionTo('recalled'); $listing->save()`; return 200 with the updated listing
-- [ ] 3.7 Register routes in `routes/api.php` inside the existing `auth:sanctum` group: `POST /carbon-listings`, `GET /carbon-listings/mine`, `GET /carbon-listings/{carbonListing}`, `POST /carbon-listings/{carbonListing}/recall`
-- [ ] 3.8 New `tests/Feature/CarbonListings/CreateTest.php`: happy 201 + persisted row; 422 on `price_twd = -1`; 422 on missing `title`
-- [ ] 3.9 New `tests/Feature/CarbonListings/MyListingsTest.php`: returns all statuses for current user only, newest first
-- [ ] 3.10 New `tests/Feature/CarbonListings/ShowTest.php`: owner sees pending; non-owner sees approved (200); non-owner sees pending (403); admin sees any
-- [ ] 3.11 New `tests/Feature/CarbonListings/RecallTest.php`: owner recalls pending → 200, status=recalled; owner recalls approved → 200; owner recalls sold → 403; non-owner recalls → 403
-- [ ] 3.12 Run `./vendor/bin/pest tests/Feature/CarbonListings` — all pass
-- [ ] 3.13 Commit as `feat(backend): add seller listing endpoints (store/mine/show/recall) with Pest coverage`
+- [x] 3.1 Create `app/Http/Requests/CarbonListings/CreateRequest.php` with rules: `title required|string|max:255`, `description required|string`, `hectares required|numeric|gt:0`, `tonnes_co2e required|numeric|gt:0`, `location required|string|max:255`, `price_twd required|numeric|gt:0`
+- [x] 3.2 Create `app/Http/Controllers/CarbonListingController.php` with `store(CreateRequest)`, `mine(Request)`, `show(CarbonListing)`, `recall(CarbonListing)` methods
+- [x] 3.3 In `store`: `CarbonListing::create([...$validated, 'user_id' => $request->user()->id])`; return 201 with the listing
+- [x] 3.4 In `mine`: `$request->user()->carbonListings()->latest()->get()`; return as `{ listings: [...] }`
+- [x] 3.5 In `show`: `$this->authorize('view', $listing)`; return as `{ listing: {...} }`
+- [x] 3.6 In `recall`: `$this->authorize('recall', $listing); $listing->transitionTo('recalled'); $listing->save()`; return 200 with the updated listing
+- [x] 3.7 Register routes in `routes/api.php` inside the existing `auth:sanctum` group: `POST /carbon-listings`, `GET /carbon-listings/mine`, `GET /carbon-listings/{carbonListing}`, `POST /carbon-listings/{carbonListing}/recall`
+- [x] 3.8 New `tests/Feature/CarbonListings/CreateTest.php`: happy 201 + persisted row; 422 on `price_twd = -1`; 422 on missing `title`
+- [x] 3.9 New `tests/Feature/CarbonListings/MyListingsTest.php`: returns all statuses for current user only, newest first
+- [x] 3.10 New `tests/Feature/CarbonListings/ShowTest.php`: owner sees pending; non-owner sees approved (200); non-owner sees pending (403); admin sees any
+- [x] 3.11 New `tests/Feature/CarbonListings/RecallTest.php`: owner recalls pending → 200, status=recalled; owner recalls approved → 200; owner recalls sold → 403; non-owner recalls → 403
+- [x] 3.12 Run `./vendor/bin/pest tests/Feature/CarbonListings` — all pass
+- [x] 3.13 Commit as `feat(backend): add seller listing endpoints (store/mine/show/recall) with Pest coverage`
 
 ## 4. Backend Market + Purchase + Admin Endpoints + Pest
 
