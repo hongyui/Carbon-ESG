@@ -41,22 +41,22 @@
 
 ## 4. Backend Market + Purchase + Admin Endpoints + Pest
 
-- [ ] 4.1 Add `index` method to `CarbonListingController`: paginate approved listings only, 12 per page, `?page=` query, newest first
-- [ ] 4.2 Add `purchase` method to `CarbonListingController`: `$this->authorize('purchase', $listing)`, then `DB::transaction(fn() => ...)` wrapping `$listing = CarbonListing::lockForUpdate()->find($id); transition to sold; create CarbonPurchase`. Catch `QueryException` with code 23000 (unique violation) → return 409 with message about listing no longer available
-- [ ] 4.3 Create `app/Http/Controllers/PurchaseController.php` with `index(Request)` returning `$user->purchases()->with('carbonListing')->latest()->paginate(12)`
-- [ ] 4.4 Create `app/Http/Controllers/Admin/CarbonListingReviewController.php` with `pending(Request)`, `approve(CarbonListing)`, `reject(RejectRequest, CarbonListing)`
-- [ ] 4.5 In `pending`: `CarbonListing::where('status', 'pending')->oldest()->paginate(12)` (FIFO queue)
-- [ ] 4.6 In `approve`: `$this->authorize('approve', $listing); $listing->transitionTo('approved'); $listing->save()`; 200 with updated listing
-- [ ] 4.7 In `reject`: `$this->authorize('reject', $listing); $listing->transitionTo('rejected', ['admin_note' => $request->validated('reason')]); $listing->save()`; 200
-- [ ] 4.8 Create `app/Http/Requests/CarbonListings/RejectRequest.php` with rules: `reason nullable|string|max:1000`
-- [ ] 4.9 Register routes: `GET /carbon-listings` (buyer browse, public in auth:sanctum group), `POST /carbon-listings/{id}/purchase`, `GET /purchases`, plus admin group `GET /admin/carbon-listings/pending`, `POST /admin/carbon-listings/{id}/approve`, `POST /admin/carbon-listings/{id}/reject`
-- [ ] 4.10 New `tests/Feature/CarbonListings/BrowseTest.php`: returns only approved; pagination meta correct; ordering newest first
-- [ ] 4.11 New `tests/Feature/CarbonListings/PurchaseTest.php`: happy 201 + purchase row + status=sold; owner=403; sold=403; non-approved=403; non-existent=404
-- [ ] 4.12 New `tests/Feature/CarbonListings/PurchaseRaceTest.php`: simulate concurrent purchase by manually creating a second purchase row in-test then triggering the controller; assert 409
-- [ ] 4.13 New `tests/Feature/Admin/CarbonListingReviewTest.php`: non-admin gets 403 on every admin endpoint; admin sees pending queue scoped to pending only; approve stamps `approved_by` + `approved_at`; reject with reason stores `admin_note`
-- [ ] 4.14 New `tests/Feature/PurchaseHistoryTest.php`: GET /purchases scoped to current user only
-- [ ] 4.15 Run `./vendor/bin/pest tests/Feature` — all tests across phase-0 + phase-1 + phase-2 pass
-- [ ] 4.16 Commit as `feat(backend): add market browse + purchase + admin review endpoints with Pest coverage`
+- [x] 4.1 Add `index` method to `CarbonListingController`: paginate approved listings only, 12 per page, `?page=` query, newest first
+- [x] 4.2 Add `purchase` method to `CarbonListingController`: `$this->authorize('purchase', $listing)`, then `DB::transaction(fn() => ...)` wrapping `$listing = CarbonListing::lockForUpdate()->find($id); transition to sold; create CarbonPurchase`. Catch `QueryException` with code 23000 (unique violation) → return 409 with message about listing no longer available
+- [x] 4.3 Create `app/Http/Controllers/PurchaseController.php` with `index(Request)` returning `$user->purchases()->with('carbonListing')->latest()->paginate(12)`
+- [x] 4.4 Create `app/Http/Controllers/Admin/CarbonListingReviewController.php` with `pending(Request)`, `approve(CarbonListing)`, `reject(RejectRequest, CarbonListing)`
+- [x] 4.5 In `pending`: `CarbonListing::where('status', 'pending')->oldest()->paginate(12)` (FIFO queue)
+- [x] 4.6 In `approve`: `$this->authorize('approve', $listing); $listing->transitionTo('approved'); $listing->save()`; 200 with updated listing
+- [x] 4.7 In `reject`: `$this->authorize('reject', $listing); $listing->transitionTo('rejected', ['admin_note' => $request->validated('reason')]); $listing->save()`; 200
+- [x] 4.8 Create `app/Http/Requests/CarbonListings/RejectRequest.php` with rules: `reason nullable|string|max:1000`
+- [x] 4.9 Register routes: `GET /carbon-listings` (buyer browse, public in auth:sanctum group), `POST /carbon-listings/{id}/purchase`, `GET /purchases`, plus admin group `GET /admin/carbon-listings/pending`, `POST /admin/carbon-listings/{id}/approve`, `POST /admin/carbon-listings/{id}/reject`
+- [x] 4.10 New `tests/Feature/CarbonListings/BrowseTest.php`: returns only approved; pagination meta correct; ordering newest first
+- [x] 4.11 New `tests/Feature/CarbonListings/PurchaseTest.php`: happy 201 + purchase row + status=sold; owner=403; sold=403; non-approved=403; non-existent=404
+- [x] 4.12 New `tests/Feature/CarbonListings/PurchaseRaceTest.php`: simulate concurrent purchase by manually creating a second purchase row in-test then triggering the controller; assert 409
+- [x] 4.13 New `tests/Feature/Admin/CarbonListingReviewTest.php`: non-admin gets 403 on every admin endpoint; admin sees pending queue scoped to pending only; approve stamps `approved_by` + `approved_at`; reject with reason stores `admin_note`
+- [x] 4.14 New `tests/Feature/PurchaseHistoryTest.php`: GET /purchases scoped to current user only
+- [x] 4.15 Run `./vendor/bin/pest tests/Feature` — all tests across phase-0 + phase-1 + phase-2 pass
+- [x] 4.16 Commit as `feat(backend): add market browse + purchase + admin review endpoints with Pest coverage`
 
 ## 5. Frontend Session Enrichment + AppHeader + Primitives
 
