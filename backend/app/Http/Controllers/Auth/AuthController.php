@@ -62,6 +62,7 @@ class AuthController extends Controller
                     'isAdmin' => $user->isAdmin(),
                     'isSeller' => $user->isSeller(),
                     'hasPurchased' => $user->hasPurchased(),
+                    'isWorker' => $user->isWorker(),
                 ],
             ),
         ]);

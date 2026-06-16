@@ -40,10 +40,10 @@
 
 ## 4. /api/me MODIFY: add isWorker
 
-- [ ] 4.1 Update `AuthController::me()` response: spread `isWorker` into the user payload alongside the existing three flags
-- [ ] 4.2 Update phase-2's `tests/Feature/Auth/MeTest.php`: extend the assertion to include the `isWorker` field; add a scenario where an approved `WorkerApplication` exists → assert `isWorker === true`
-- [ ] 4.3 Run `./vendor/bin/pest tests/Feature/Auth/MeTest.php` — passes
-- [ ] 4.4 Commit as `feat(backend): /api/me returns isWorker flag`
+- [x] 4.1 Update `AuthController::me()` response: spread `isWorker` into the user payload alongside the existing three flags
+- [x] 4.2 Update phase-2's `tests/Feature/Auth/MeTest.php`: extend the assertion to include the `isWorker` field; add a scenario where an approved `WorkerApplication` exists → assert `isWorker === true`
+- [x] 4.3 Run `./vendor/bin/pest tests/Feature/Auth/MeTest.php` — passes
+- [x] 4.4 Commit as `feat(backend): /api/me returns isWorker flag`
 
 ## 5. Worker Application Endpoints + Admin Review + Pest
 

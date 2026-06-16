@@ -3,6 +3,7 @@
 use App\Models\CarbonListing;
 use App\Models\CarbonPurchase;
 use App\Models\User;
+use App\Models\WorkerApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -20,7 +21,8 @@ it('returns the authenticated user with role flags', function () {
         ->assertJsonPath('user.email', 'me@example.com')
         ->assertJsonPath('user.isAdmin', false)
         ->assertJsonPath('user.isSeller', false)
-        ->assertJsonPath('user.hasPurchased', false);
+        ->assertJsonPath('user.hasPurchased', false)
+        ->assertJsonPath('user.isWorker', false);
 });
 
 it('reports isAdmin true for admin users', function () {
@@ -51,6 +53,24 @@ it('reports hasPurchased true once a purchase row exists for the user', function
     $response = $this->actingAs($buyer)->getJson('/api/me');
 
     $response->assertOk()->assertJsonPath('user.hasPurchased', true);
+});
+
+it('reports isWorker true once the application is approved', function () {
+    $user = User::factory()->create();
+    WorkerApplication::factory()->for($user)->approved()->create();
+
+    $response = $this->actingAs($user)->getJson('/api/me');
+
+    $response->assertOk()->assertJsonPath('user.isWorker', true);
+});
+
+it('reports isWorker false for a pending application', function () {
+    $user = User::factory()->create();
+    WorkerApplication::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)->getJson('/api/me');
+
+    $response->assertOk()->assertJsonPath('user.isWorker', false);
 });
 
 it('rejects anonymous access with 401', function () {
