@@ -26,7 +26,7 @@ export default async function RootLayout({
 
   return (
     <html lang="zh-Hant-TW" className={`${jakarta.variable} antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <SessionProvider initialUser={user}>{children}</SessionProvider>
       </body>
     </html>
