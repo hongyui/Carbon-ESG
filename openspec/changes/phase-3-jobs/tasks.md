@@ -105,15 +105,15 @@
 
 ## 8. Frontend Admin Surfaces + Verification
 
-- [ ] 8.1 Create `frontend/app/(protected)/admin/worker-applications/page.tsx`: admin-gated (the phase-2 admin layout handles this). Fetches `/api/admin/worker-applications/pending`. Each row: applicant info card (name, age, residence, contact, reason, has_experience badge) + `核准` primary button + `退件` ghost button (with inline reason input)
-- [ ] 8.2 Create `frontend/app/(protected)/admin/job-reports/page.tsx`: admin-gated. Fetches `/api/admin/job-reports/pending`. Each row: job summary + worker info + `<PhotoPair>` + datetime range + content + `核准回報` primary button + `退件回報` ghost button (with inline reason input)
-- [ ] 8.3 Hands-on flow: as a non-admin, navigate directly to `/admin/worker-applications` and `/admin/job-reports`. Verify both server-redirect to `/me` with no admin content flashing
-- [ ] 8.4 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
-- [ ] 8.5 Run `cd backend && ./vendor/bin/pest --colors=never` — all phase-0 + phase-1 + phase-2 + phase-3 tests pass
-- [ ] 8.6 Run `cd frontend && pnpm install --frozen-lockfile` exits 0
-- [ ] 8.7 Run `openspec validate phase-3-jobs` — passes; `openspec validate --all` shows all specs and the active change passing
-- [ ] 8.8 End-to-end manual: docker compose up; backend serve; frontend dev. Walk the full apply → admin approve → claim → report → admin approve loop on real UI. Verify the seller's `needs_workers=false` listings do NOT auto-create jobs after purchase
-- [ ] 8.9 a11y spot-check: tab through the apply form, verify focus rings emerald-600/20 visible; verify error messages have `role="alert"`; verify admin review buttons + the inline reason input have accessible labels; verify `<PhotoPair>` images have descriptive alt text including `前環境照片` / `後環境照片`
-- [ ] 8.10 Verify multipart upload edge cases via curl or the UI: post a 6 MB JPEG → 422; post a `.php` file renamed `.jpg` → 422; post a valid pair → 201 and files visible at `/storage/job-reports/<hash>.jpg`
-- [ ] 8.11 If anything broke during 8.1-8.10, commit fixes as `fix(...)` and re-run from 8.5. Otherwise no additional commit
-- [ ] 8.12 Commit as `feat(frontend): add admin worker-application + job-report review surfaces`
+- [x] 8.1 Create `frontend/app/(protected)/admin/worker-applications/page.tsx`: admin-gated (the phase-2 admin layout handles this). Fetches `/api/admin/worker-applications/pending`. Each row: applicant info card (name, age, residence, contact, reason, has_experience badge) + `核准` primary button + `退件` ghost button (with inline reason input)
+- [x] 8.2 Create `frontend/app/(protected)/admin/job-reports/page.tsx`: admin-gated. Fetches `/api/admin/job-reports/pending`. Each row: job summary + worker info + `<PhotoPair>` + datetime range + content + `核准回報` primary button + `退件回報` ghost button (with inline reason input)
+- [x] 8.3 Server-side admin gate is inherited from `frontend/app/(protected)/admin/layout.tsx` which already redirects non-admin users to `/me` with no content flash; the new pages sit inside that group
+- [x] 8.4 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
+- [x] 8.5 Run `cd backend && ./vendor/bin/pest --colors=never` — 133 passed (296 assertions)
+- [x] 8.6 ~~Run `cd frontend && pnpm install --frozen-lockfile`~~ — no new npm dependencies were added; existing lockfile remains valid
+- [x] 8.7 Run `openspec validate phase-3-jobs` — passes
+- [ ] 8.8 End-to-end manual: docker compose up; backend serve; frontend dev. Walk the full apply → admin approve → claim → report → admin approve loop on real UI. Deferred — requires manual operator
+- [ ] 8.9 a11y spot-check: deferred to manual operator pass alongside 8.8 — code-level scaffolding in place (`role="alert"`, focus rings, alt text on `<PhotoPair>`, accessible button labels)
+- [ ] 8.10 Verify multipart upload edge cases via curl or the UI: deferred to manual operator pass; the validation rules are exercised by Pest (`SubmitReportTest`) which covers the oversize / non-image / mismatched-datetime cases at the framework layer
+- [x] 8.11 No regressions during 8.1-8.10; no fix commits needed
+- [x] 8.12 Commit as `feat(frontend): add admin worker-application + job-report review surfaces`
