@@ -1,12 +1,12 @@
 ## 1. Database Schema
 
-- [ ] 1.1 Create migration `add_needs_workers_to_carbon_listings_table.php`: `$table->boolean('needs_workers')->default(false)->after('status');`
-- [ ] 1.2 Create migration `create_worker_applications_table.php` with columns per spec: `id`, `user_id` FK users.id cascade **UNIQUE**, `reason` text, `has_experience` boolean, `age` unsignedTinyInteger, `residence` string(255), `contact` string(255), `status` string(20) default `'pending'`, `reviewer_id` FK users.id nullable nullOnDelete, `review_reason` text nullable, `reviewed_at` timestamp nullable, `timestamps()`
-- [ ] 1.3 Create migration `create_worker_jobs_table.php` with `id`, `carbon_listing_id` FK carbon_listings.id cascade **UNIQUE**, `worker_id` FK users.id nullable nullOnDelete, `status` string(20) default `'open'`, `claimed_at` timestamp nullable, `timestamps()`
-- [ ] 1.4 Create migration `create_worker_job_reports_table.php` with `id`, `worker_job_id` FK worker_jobs.id cascade **UNIQUE**, `worker_id` FK users.id cascade, `datetime_start` datetime, `datetime_end` datetime, `before_image_path` string(255), `after_image_path` string(255), `content` text, `status` string(20) default `'pending'`, `reviewer_id` FK users.id nullable nullOnDelete, `review_reason` text nullable, `reviewed_at` timestamp nullable, `timestamps()`
-- [ ] 1.5 Run `cd backend && php artisan migrate` against docker mysql; verify all four tables / column present via `php artisan tinker --execute="echo Schema::hasTable('worker_applications'); echo Schema::hasTable('worker_jobs'); echo Schema::hasTable('worker_job_reports'); echo Schema::hasColumn('carbon_listings', 'needs_workers');"`
-- [ ] 1.6 Run `php artisan storage:link` once; add `backend/storage/app/public/job-reports/.gitignore` containing `*\n!.gitignore` so the dir exists in git but uploaded files don't
-- [ ] 1.7 Commit as `feat(backend): add jobs migrations + needs_workers column + storage link`
+- [x] 1.1 Create migration `add_needs_workers_to_carbon_listings_table.php`: `$table->boolean('needs_workers')->default(false)->after('status');`
+- [x] 1.2 Create migration `create_worker_applications_table.php` with columns per spec: `id`, `user_id` FK users.id cascade **UNIQUE**, `reason` text, `has_experience` boolean, `age` unsignedTinyInteger, `residence` string(255), `contact` string(255), `status` string(20) default `'pending'`, `reviewer_id` FK users.id nullable nullOnDelete, `review_reason` text nullable, `reviewed_at` timestamp nullable, `timestamps()`
+- [x] 1.3 Create migration `create_worker_jobs_table.php` with `id`, `carbon_listing_id` FK carbon_listings.id cascade **UNIQUE**, `worker_id` FK users.id nullable nullOnDelete, `status` string(20) default `'open'`, `claimed_at` timestamp nullable, `timestamps()`
+- [x] 1.4 Create migration `create_worker_job_reports_table.php` with `id`, `worker_job_id` FK worker_jobs.id cascade **UNIQUE**, `worker_id` FK users.id cascade, `datetime_start` datetime, `datetime_end` datetime, `before_image_path` string(255), `after_image_path` string(255), `content` text, `status` string(20) default `'pending'`, `reviewer_id` FK users.id nullable nullOnDelete, `review_reason` text nullable, `reviewed_at` timestamp nullable, `timestamps()`
+- [x] 1.5 Run `cd backend && php artisan migrate` against docker mysql; verify all four tables / column present via `php artisan tinker --execute="echo Schema::hasTable('worker_applications'); echo Schema::hasTable('worker_jobs'); echo Schema::hasTable('worker_job_reports'); echo Schema::hasColumn('carbon_listings', 'needs_workers');"`
+- [x] 1.6 Run `php artisan storage:link` once; add `backend/storage/app/public/job-reports/.gitignore` containing `*\n!.gitignore` so the dir exists in git but uploaded files don't
+- [x] 1.7 Commit as `feat(backend): add jobs migrations + needs_workers column + storage link`
 
 ## 2. Models, State Machines, Role Inference, Factories
 
