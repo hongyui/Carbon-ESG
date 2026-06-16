@@ -6,6 +6,7 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -73,5 +74,22 @@ class User extends Authenticatable
     public function hasPurchased(): bool
     {
         return $this->purchases()->exists();
+    }
+
+    public function workerApplication(): HasOne
+    {
+        return $this->hasOne(WorkerApplication::class);
+    }
+
+    public function workerJobs(): HasMany
+    {
+        return $this->hasMany(WorkerJob::class, 'worker_id');
+    }
+
+    public function isWorker(): bool
+    {
+        return $this->workerApplication()
+            ->where('status', WorkerApplication::STATUS_APPROVED)
+            ->exists();
     }
 }

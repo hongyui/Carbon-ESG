@@ -51,7 +51,7 @@ The backend SHALL provide a `worker_jobs` table and an Eloquent `WorkerJob` mode
 
 The model MUST include at minimum: `id`, `carbon_listing_id` (FK → carbon_listings, on delete cascade, **UNIQUE**), `worker_id` (FK → users.id, nullable), `status` (string enum), `claimed_at` (timestamp nullable), `created_at`, `updated_at`.
 
-The `status` column MUST take one of exactly five string values: `open`, `claimed`, `reported`, `approved`, `rejected`. New jobs are created at `open`. `approved` is terminal. `rejected` is NOT terminal — a rejected report flips the parent job back to `claimed` so the same worker can resubmit (see the `WorkerJobReport` requirement).
+The `status` column MUST take one of exactly four string values: `open`, `claimed`, `reported`, `approved`. New jobs are created at `open`. `approved` is terminal. A rejected `WorkerJobReport` does NOT put the job into a rejected state — instead the report-rejection listener transitions the parent job from `reported` back to `claimed` so the same worker can resubmit (see the `WorkerJobReport` requirement). The job never has its own `rejected` status; rejection is a property of the report, not the job.
 
 The `UNIQUE(carbon_listing_id)` constraint enforces "one job per listing, ever" and is the structural reason a buyer cannot be charged twice for the same land or have two parallel maintenance crews assigned.
 

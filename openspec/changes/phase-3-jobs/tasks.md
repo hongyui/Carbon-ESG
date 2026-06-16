@@ -10,22 +10,22 @@
 
 ## 2. Models, State Machines, Role Inference, Factories
 
-- [ ] 2.1 Create `app/Models/WorkerApplication.php` with `$fillable`, `$casts` (`has_experience` → boolean; `reviewed_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` constants, `belongsTo(User)`, `belongsTo(User, 'reviewer_id')` relations
-- [ ] 2.2 Implement `WorkerApplication::transitionTo(string $newStatus, array $extras = []): void` with the allowed-transition map from the spec; on approve/reject stamp `reviewer_id = Auth::id()` and `reviewed_at = now()`; on reject store `$extras['review_reason']`
-- [ ] 2.3 Register `WorkerApplication::saving()` listener mirroring phase-2's `CarbonListing` pattern: when `status` is dirty, assert allowed; throw `InvalidStateTransition` (reuse phase-2's exception) otherwise
-- [ ] 2.4 Create `app/Models/WorkerJob.php` with `$fillable`, `$casts` (`claimed_at` → datetime), `STATUS_OPEN` / `STATUS_CLAIMED` / `STATUS_REPORTED` / `STATUS_APPROVED` / `STATUS_REJECTED` constants, `belongsTo(CarbonListing)`, `belongsTo(User, 'worker_id')`, `hasOne(WorkerJobReport)` relations
-- [ ] 2.5 Implement `WorkerJob::transitionTo()` with the allowed map: `open → claimed`, `claimed → reported`, `reported → approved | rejected`, `rejected → claimed`. On `claimed` stamp `claimed_at = now()` if not set; on `claimed` (transitioning from `open`) also set `worker_id = $extras['worker_id'] ?? Auth::id()`
-- [ ] 2.6 Register `WorkerJob::saving()` listener with same pattern as 2.3
-- [ ] 2.7 Create `app/Models/WorkerJobReport.php` with `$fillable`, `$casts` (`datetime_start` / `datetime_end` / `reviewed_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` constants, `belongsTo(WorkerJob)`, `belongsTo(User, 'worker_id')`, `belongsTo(User, 'reviewer_id')`
-- [ ] 2.8 Implement `WorkerJobReport::transitionTo()` with allowed map: `pending → approved | rejected`. On approve/reject stamp `reviewer_id` and `reviewed_at`; on reject store `$extras['review_reason']`
-- [ ] 2.9 Register `WorkerJobReport::saved()` listener: when status transitions to `rejected`, call `$report->workerJob->transitionTo('claimed')` and `->save()` inside the parent transaction
-- [ ] 2.10 Add `User::workerApplication()` (`hasOne`), `User::workerJobs()` (`hasMany` on `worker_id`)
-- [ ] 2.11 Add `User::isWorker(): bool` returning `$this->workerApplication()->where('status', 'approved')->exists()`
-- [ ] 2.12 Add factories: `WorkerApplicationFactory`, `WorkerJobFactory`, `WorkerJobReportFactory` with sane defaults and `pending()` / `approved()` / `rejected()` / `claimed()` / `reported()` states
-- [ ] 2.13 New `tests/Feature/Worker/StateMachineTest.php`: walk every allowed transition with `transitionTo()` on each of the three models; assert each disallowed transition throws `InvalidStateTransition`; assert direct status assignment is also caught by the saving listener
-- [ ] 2.14 New `tests/Feature/Worker/IsWorkerHelperTest.php`: fixtures for (no application, pending, approved, rejected) × assert each gives correct `isWorker` boolean; assert query is an `EXISTS` on the indexed `user_id` column (via `DB::enableQueryLog`)
-- [ ] 2.15 Run `./vendor/bin/pest tests/Feature/Worker` — all pass
-- [ ] 2.16 Commit as `feat(backend): add WorkerApplication/WorkerJob/WorkerJobReport models + state machines + isWorker helper`
+- [x] 2.1 Create `app/Models/WorkerApplication.php` with `$fillable`, `$casts` (`has_experience` → boolean; `reviewed_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` constants, `belongsTo(User)`, `belongsTo(User, 'reviewer_id')` relations
+- [x] 2.2 Implement `WorkerApplication::transitionTo(string $newStatus, array $extras = []): void` with the allowed-transition map from the spec; on approve/reject stamp `reviewer_id = Auth::id()` and `reviewed_at = now()`; on reject store `$extras['review_reason']`
+- [x] 2.3 Register `WorkerApplication::saving()` listener mirroring phase-2's `CarbonListing` pattern: when `status` is dirty, assert allowed; throw `InvalidStateTransition` (reuse phase-2's exception) otherwise
+- [x] 2.4 Create `app/Models/WorkerJob.php` with `$fillable`, `$casts` (`claimed_at` → datetime), `STATUS_OPEN` / `STATUS_CLAIMED` / `STATUS_REPORTED` / `STATUS_APPROVED` constants, `belongsTo(CarbonListing)`, `belongsTo(User, 'worker_id')`, `hasOne(WorkerJobReport)` relations (note: `rejected` status was dropped during apply — job rejection is always a property of the report, the job bounces `reported → claimed`; spec updated to match)
+- [x] 2.5 Implement `WorkerJob::transitionTo()` with the allowed map: `open → claimed`, `claimed → reported`, `reported → approved | claimed`. On first-time `claimed` (from `open`) stamp `claimed_at = now()` and set `worker_id = $extras['worker_id'] ?? Auth::id()`; the rejection-bounce path (`reported → claimed`) preserves worker_id and claimed_at
+- [x] 2.6 Register `WorkerJob::saving()` listener with same pattern as 2.3
+- [x] 2.7 Create `app/Models/WorkerJobReport.php` with `$fillable`, `$casts` (`datetime_start` / `datetime_end` / `reviewed_at` → datetime), `STATUS_PENDING` / `STATUS_APPROVED` / `STATUS_REJECTED` constants, `belongsTo(WorkerJob)`, `belongsTo(User, 'worker_id')`, `belongsTo(User, 'reviewer_id')`
+- [x] 2.8 Implement `WorkerJobReport::transitionTo()` with allowed map: `pending → approved | rejected`. On approve/reject stamp `reviewer_id` and `reviewed_at`; on reject store `$extras['review_reason']`
+- [x] 2.9 Register `WorkerJobReport::saved()` listener: when status transitions to `rejected`, call `$report->workerJob->transitionTo('claimed')` and `->save()` inside the parent transaction
+- [x] 2.10 Add `User::workerApplication()` (`hasOne`), `User::workerJobs()` (`hasMany` on `worker_id`)
+- [x] 2.11 Add `User::isWorker(): bool` returning `$this->workerApplication()->where('status', 'approved')->exists()`
+- [x] 2.12 Add factories: `WorkerApplicationFactory`, `WorkerJobFactory`, `WorkerJobReportFactory` with sane defaults and `pending()` / `approved()` / `rejected()` / `claimed()` / `reported()` states
+- [x] 2.13 New `tests/Feature/Worker/StateMachineTest.php`: walk every allowed transition with `transitionTo()` on each of the three models; assert each disallowed transition throws `InvalidStateTransition`; assert direct status assignment is also caught by the saving listener
+- [x] 2.14 New `tests/Feature/Worker/IsWorkerHelperTest.php`: fixtures for (no application, pending, approved, rejected) × assert each gives correct `isWorker` boolean; assert query is an `EXISTS` on the indexed `user_id` column (via `DB::enableQueryLog`)
+- [x] 2.15 Run `./vendor/bin/pest tests/Feature/Worker` — all pass
+- [x] 2.16 Commit as `feat(backend): add WorkerApplication/WorkerJob/WorkerJobReport models + state machines + isWorker helper`
 
 ## 3. Carbon Listing MODIFY: needs_workers + auto-create WorkerJob on sold
 
