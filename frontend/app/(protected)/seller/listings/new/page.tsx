@@ -13,6 +13,7 @@ interface NewListingForm {
   tonnes_co2e: string;
   location: string;
   price_twd: string;
+  needs_workers: boolean;
 }
 
 export default function NewListingPage() {
@@ -24,11 +25,15 @@ export default function NewListingPage() {
     tonnes_co2e: '',
     location: '',
     price_twd: '',
+    needs_workers: false,
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  function update(field: keyof NewListingForm, value: string) {
+  function update<K extends keyof NewListingForm>(
+    field: K,
+    value: NewListingForm[K],
+  ) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
@@ -44,6 +49,7 @@ export default function NewListingPage() {
         tonnes_co2e: parseFloat(form.tonnes_co2e),
         location: form.location,
         price_twd: parseFloat(form.price_twd),
+        needs_workers: form.needs_workers,
       });
       router.push('/seller/listings');
       router.refresh();
@@ -143,6 +149,23 @@ export default function NewListingPage() {
             className="rounded-md border border-zinc-300 bg-white px-3 py-2.5 text-sm text-zinc-900 transition placeholder:text-zinc-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20"
           />
         </div>
+
+        <label className="flex items-start gap-3 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700">
+          <input
+            type="checkbox"
+            checked={form.needs_workers}
+            onChange={(e) => update('needs_workers', e.target.checked)}
+            className="mt-0.5 size-4 rounded border-zinc-300 text-emerald-600 focus:ring-emerald-600/30"
+          />
+          <span>
+            <span className="block font-medium text-zinc-900">
+              這塊地需要工人後續維護
+            </span>
+            <span className="mt-1 block text-xs text-zinc-600">
+              勾選後,賣出時系統會自動建立一筆工作機會,供已核准工人認領。
+            </span>
+          </span>
+        </label>
 
         {error && (
           <p

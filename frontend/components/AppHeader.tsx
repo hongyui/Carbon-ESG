@@ -5,14 +5,26 @@ import { usePathname, useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { useSession } from '@/lib/session/SessionProvider';
 import { Button } from '@/components/ui/Button';
+import type { WorkerApplicationStatus } from '@/lib/api/worker';
+
+interface AppHeaderProps {
+  /**
+   * Snapshot of the user's worker_application status, fetched server-side
+   * by (protected)/layout.tsx so the header can branch without an extra
+   * client round trip. null means "no application row exists." undefined
+   * means the layout didn't fetch (treated like null for nav purposes).
+   */
+  applicationStatus?: WorkerApplicationStatus | null;
+}
 
 /**
  * Authenticated app shell header. Distinct from the marketing
  * <StickyHeader> (which does scroll-aware transparency over the hero
  * photo). This header is opaque, sticky, and renders role-aware nav
- * based on the three flags returned by /api/me.
+ * based on the four flags returned by /api/me plus the worker
+ * application status fetched in the protected layout.
  */
-export function AppHeader() {
+export function AppHeader({ applicationStatus = null }: AppHeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { user, setUser } = useSession();
@@ -30,6 +42,10 @@ export function AppHeader() {
     router.refresh();
   }
 
+  const isWorker = !!user.isWorker;
+  const hasNonApprovedApp =
+    applicationStatus === 'pending' || applicationStatus === 'rejected';
+
   return (
     <header className="sticky top-0 z-30 border-b border-zinc-200 bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6 lg:px-12">
@@ -40,7 +56,7 @@ export function AppHeader() {
           Carbon-ESG
         </Link>
 
-        <nav className="flex items-center gap-1">
+        <nav className="flex flex-wrap items-center gap-1">
           <NavLink href="/market" active={pathname?.startsWith('/market')}>
             市場
           </NavLink>
@@ -56,13 +72,70 @@ export function AppHeader() {
           >
             我的購買
           </NavLink>
-          {user.isAdmin && (
+
+          {isWorker && (
+            <>
+              <NavLink
+                href="/worker/jobs"
+                active={
+                  pathname?.startsWith('/worker/jobs') &&
+                  !pathname?.startsWith('/worker/jobs/mine')
+                }
+              >
+                工作機會
+              </NavLink>
+              <NavLink
+                href="/worker/jobs/mine"
+                active={pathname?.startsWith('/worker/jobs/mine')}
+              >
+                我的工作
+              </NavLink>
+            </>
+          )}
+          {!isWorker && hasNonApprovedApp && (
             <NavLink
-              href="/admin/review"
-              active={pathname?.startsWith('/admin')}
+              href="/worker/apply/status"
+              active={pathname?.startsWith('/worker/apply')}
             >
-              後台審核
+              申請狀態
             </NavLink>
+          )}
+          {!isWorker && !hasNonApprovedApp && (
+            <NavLink
+              href="/worker/apply"
+              active={pathname?.startsWith('/worker/apply')}
+            >
+              工人申請
+            </NavLink>
+          )}
+
+          {user.isAdmin && (
+            <>
+              <NavLink
+                href="/admin/review"
+                active={
+                  pathname?.startsWith('/admin/review') ?? false
+                }
+              >
+                後台審核
+              </NavLink>
+              <NavLink
+                href="/admin/worker-applications"
+                active={
+                  pathname?.startsWith('/admin/worker-applications') ?? false
+                }
+              >
+                工人申請審核
+              </NavLink>
+              <NavLink
+                href="/admin/job-reports"
+                active={
+                  pathname?.startsWith('/admin/job-reports') ?? false
+                }
+              >
+                工作回報審核
+              </NavLink>
+            </>
           )}
         </nav>
 

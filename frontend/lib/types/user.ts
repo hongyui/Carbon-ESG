@@ -9,4 +9,6 @@ export interface User {
   isSeller?: boolean;
   /** Inferred from existence of carbon_purchases rows for this user. */
   hasPurchased?: boolean;
+  /** Inferred from existence of an approved worker_applications row. */
+  isWorker?: boolean;
 }

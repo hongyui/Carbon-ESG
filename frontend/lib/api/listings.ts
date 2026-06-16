@@ -25,6 +25,7 @@ export interface CarbonListing {
   location: string;
   price_twd: string;
   status: ListingStatus;
+  needs_workers: boolean;
   admin_note: string | null;
   approved_by: number | null;
   approved_at: string | null;
@@ -49,6 +50,7 @@ export interface CreateListingInput {
   tonnes_co2e: number;
   location: string;
   price_twd: number;
+  needs_workers?: boolean;
 }
 
 export interface Paginated<T> {

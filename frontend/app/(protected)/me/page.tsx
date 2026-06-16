@@ -30,10 +30,32 @@ export default async function MePage() {
           <Button variant="ghost" href="/purchases">
             我的購買
           </Button>
-          {user.isAdmin && (
-            <Button variant="ghost" href="/admin/review">
-              後台審核
+          {user.isWorker ? (
+            <>
+              <Button variant="ghost" href="/worker/jobs">
+                工作機會
+              </Button>
+              <Button variant="ghost" href="/worker/jobs/mine">
+                我的工作
+              </Button>
+            </>
+          ) : (
+            <Button variant="ghost" href="/worker/apply">
+              工人申請
             </Button>
+          )}
+          {user.isAdmin && (
+            <>
+              <Button variant="ghost" href="/admin/review">
+                後台審核
+              </Button>
+              <Button variant="ghost" href="/admin/worker-applications">
+                工人申請審核
+              </Button>
+              <Button variant="ghost" href="/admin/job-reports">
+                工作回報審核
+              </Button>
+            </>
           )}
         </div>
       </section>

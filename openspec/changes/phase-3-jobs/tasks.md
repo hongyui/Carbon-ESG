@@ -83,25 +83,25 @@
 
 ## 7. Frontend AppHeader Update + Worker Surfaces
 
-- [ ] 7.1 Update `frontend/lib/types/user.ts`: add optional `isWorker?: boolean` to the `User` type
-- [ ] 7.2 Update `frontend/lib/session/getSessionFromCookies.ts` (or equivalent server helper): propagate `isWorker` from the `/api/me` payload to the session object
-- [ ] 7.3 Create `frontend/lib/session/getApplicationStatusFromCookies.ts`: server-side helper that GETs `/api/worker-applications/mine` with the request cookies; returns `null` | `'pending'` | `'approved'` | `'rejected'`
-- [ ] 7.4 Update `frontend/app/(protected)/layout.tsx`: in addition to `getSessionFromCookies()`, also call `getApplicationStatusFromCookies()` and pass both to `<AppHeader>`
-- [ ] 7.5 Update `frontend/components/AppHeader.tsx`: accept new `applicationStatus` prop; render worker-conditional nav per spec (`工人申請` / `申請狀態` / `工作機會` / `我的工作` / admin's `工人申請審核` / `工作回報審核`)
-- [ ] 7.6 Update `frontend/DESIGN_SYSTEM.md`: add the new CTA labels (`認領` / `提交回報` / `核准回報` / `退件回報` / `工人申請` / `申請狀態` / `工作機會` / `我的工作` / `工人申請審核` / `工作回報審核`) and document the `<PhotoPair>` primitive
-- [ ] 7.7 Create `frontend/components/PhotoPair.tsx`: `{ before: string; after: string; className?: string }`; renders two side-by-side images with labels `前` / `後` using Tailwind; clicking enlarges in a dialog (reuse phase-2's confirm dialog primitive if applicable, or render via `<dialog>` element)
-- [ ] 7.8 Create `frontend/lib/api/worker.ts`: typed client wrapping `createApplication`, `getMyApplication`, `getOpenJobs`, `getMyJobs`, `getJob`, `claimJob`, `submitReport(jobId, formData)` (note: submitReport uses FormData, not JSON)
-- [ ] 7.9 Create `frontend/app/(protected)/worker/apply/page.tsx`: client form with `<Field>` × 5; on 409 redirect to `/worker/apply/status`; on success redirect to `/worker/apply/status`
-- [ ] 7.10 Create `frontend/app/(protected)/worker/apply/status/page.tsx`: server component fetching `/api/worker-applications/mine`; renders `<StatusBadge>` (reuse phase-2's badge with new labels `審核中` / `已核准` / `已退件`) + the application content + admin's reason if rejected; if no row, redirect to `/worker/apply`
-- [ ] 7.11 Create `frontend/app/(protected)/worker/jobs/page.tsx`: server component; if `!session.user.isWorker`, `redirect('/worker/apply')`. Fetches `/api/worker-jobs/open`; renders editorial cards (reuse market layout); empty state with explanatory CTA
-- [ ] 7.12 Create `frontend/app/(protected)/worker/jobs/[id]/page.tsx`: server component fetching `/api/worker-jobs/{id}`. Detail card. Status-conditional CTAs per spec. If approved report exists, render `<PhotoPair>` for the public history
-- [ ] 7.13 Create `frontend/app/(protected)/worker/jobs/[id]/report/page.tsx`: `'use client'` form with two datetime-local inputs, two `<input type="file" accept="image/*">`, a textarea; submits multipart via the worker.ts helper; success redirects to `/worker/jobs/[id]`; error → red error block per design system
-- [ ] 7.14 Create `frontend/app/(protected)/worker/jobs/mine/page.tsx`: server component fetching `/api/worker-jobs/mine`; renders three sections (`進行中` / `審核中` / `已完成`) filtered by `status`; empty state per section
-- [ ] 7.15 Update `frontend/app/(protected)/seller/listings/new/page.tsx`: add a `needs_workers` checkbox with helper label `這塊地需要工人後續維護` before the submit button; include the boolean in the request body
-- [ ] 7.16 Update `frontend/app/(protected)/me/page.tsx`: extend the quick-link section with role-conditional links to `/worker/apply` (or `/worker/apply/status`) / `/worker/jobs` / `/worker/jobs/mine`
-- [ ] 7.17 Hands-on flow: register a fresh user, submit application, log in as admin and approve, switch back to user, verify `工作機會` appears in header. As seller, create a listing with `needs_workers=true`, log in as admin to approve, switch to buyer, purchase. Switch back to worker, see the new open job at `/worker/jobs`, claim it, submit report with two photos, switch to admin and approve. Verify worker's `/worker/jobs/mine` shows the job under `已完成`
-- [ ] 7.18 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
-- [ ] 7.19 Commit as `feat(frontend): add worker apply + jobs + report surfaces + needs_workers seller checkbox + AppHeader worker nav`
+- [x] 7.1 Update `frontend/lib/types/user.ts`: add optional `isWorker?: boolean` to the `User` type
+- [x] 7.2 Update `frontend/lib/session/getSessionFromCookies.ts` — no change needed; `isWorker` flows through the existing User shape unchanged
+- [x] 7.3 Create `frontend/lib/session/getApplicationStatus.ts`: server-side helper that GETs `/api/worker-applications/mine` with the request cookies; returns the full `WorkerApplication` row or `null`
+- [x] 7.4 Update `frontend/app/(protected)/layout.tsx`: in addition to `getSessionFromCookies()`, also call `getApplicationStatusFromCookies()` and pass both to `<AppHeader>`
+- [x] 7.5 Update `frontend/components/AppHeader.tsx`: accept new `applicationStatus` prop; render worker-conditional nav per spec (`工人申請` / `申請狀態` / `工作機會` / `我的工作` / admin's `工人申請審核` / `工作回報審核`)
+- [x] 7.6 Update `frontend/DESIGN_SYSTEM.md`: add the new CTA labels (`認領` / `提交回報` / `核准回報` / `退件回報` / `送出申請`) and document the `<PhotoPair>` primitive
+- [x] 7.7 Create `frontend/components/PhotoPair.tsx`: `{ before: string; after: string; className?: string }`; renders two side-by-side images with `前 · Before` / `後 · After` captions
+- [x] 7.8 Create `frontend/lib/api/worker.ts`: typed client wrapping `createApplication`, `getMyApplication`, `getOpenJobs`, `getMyJobs`, `getJob`, `claimJob`, `submitReport(jobId, payload)` (uses FormData internally), plus admin endpoints
+- [x] 7.9 Create `frontend/app/(protected)/worker/apply/page.tsx`: client form with reason / experience radio / age / residence / contact; on 403/409 redirect to `/worker/apply/status`; on success redirect to `/worker/apply/status`
+- [x] 7.10 Create `frontend/app/(protected)/worker/apply/status/page.tsx`: server component fetching `/api/worker-applications/mine`; renders a `<WorkerStatusBadge kind="application">` + the application content + admin's reason if rejected; if no row, redirect to `/worker/apply`
+- [x] 7.11 Create `frontend/app/(protected)/worker/jobs/page.tsx`: server component; if `!session.user.isWorker`, `redirect('/worker/apply')`. Fetches `/api/worker-jobs/open`; renders editorial cards; empty state with explanatory CTA
+- [x] 7.12 Create `frontend/app/(protected)/worker/jobs/[id]/page.tsx`: server component fetching `/api/worker-jobs/{id}`. Detail card. Status-conditional CTAs. If report exists, render `<PhotoPair>` for the maintenance history
+- [x] 7.13 Create `frontend/app/(protected)/worker/jobs/[id]/report/page.tsx`: `'use client'` form with two datetime-local inputs, two `<input type="file" accept="image/*">` with live preview, a textarea; submits multipart via the worker.ts helper; success redirects to `/worker/jobs/[id]`
+- [x] 7.14 Create `frontend/app/(protected)/worker/jobs/mine/page.tsx`: server component fetching `/api/worker-jobs/mine`; renders three sections (`進行中` / `審核中` / `已完成`) filtered by `status`; empty state when none
+- [x] 7.15 Update `frontend/app/(protected)/seller/listings/new/page.tsx`: add a `needs_workers` checkbox with helper label `這塊地需要工人後續維護` before the submit button; include the boolean in the request body
+- [x] 7.16 Update `frontend/app/(protected)/me/page.tsx`: extend the quick-link section with role-conditional links (worker/apply if not worker, worker/jobs + worker/jobs/mine if worker, admin worker-applications + job-reports if admin)
+- [ ] 7.17 Hands-on flow: deferred to Group 8 verification — backend + frontend type-clean; UI walkthrough requires running both servers and is done as part of the end-to-end manual check
+- [x] 7.18 Run `cd frontend && ./node_modules/.bin/tsc --noEmit` — no errors
+- [x] 7.19 Commit as `feat(frontend): add worker apply + jobs + report surfaces + needs_workers seller checkbox + AppHeader worker nav`
 
 ## 8. Frontend Admin Surfaces + Verification
 

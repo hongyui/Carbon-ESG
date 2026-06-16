@@ -117,6 +117,11 @@ Four variants. Same height and padding across all surfaces.
 | Seller withdraws own listing | `撤回` |
 | Admin approves pending listing | `核准` |
 | Admin rejects pending listing | `退件` |
+| Submit worker application | `送出申請` |
+| Worker claims an open job | `認領` |
+| Worker submits maintenance report | `提交回報` |
+| Admin approves a report | `核准回報` |
+| Admin rejects a report | `退件回報` |
 
 Do NOT introduce "立即註冊" / "註冊一個帳號" / "Sign up" / "Sign in" variants.
 If you need a new intent, add it here first.
@@ -145,6 +150,21 @@ centered text, optional icon above title, optional CTA below body.
   title="還沒有上架的碳匯"
   body="把你想守護的那塊地登錄上來,等通過審核後就能進市場。"
   cta={<Button href="/seller/listings/new">送出審核</Button>}
+/>
+```
+
+### `<PhotoPair>` (primitive)
+
+Side-by-side maintenance photos (`前` / `後`) for a worker job report.
+Used on the worker job detail page and the admin report review queue.
+Props `{ before: string; after: string; className?: string }`. Each side
+has aspect-4/3, `border-zinc-200`, descriptive alt text (`維護前環境照片` /
+`維護後環境照片`), and a `前 · Before` / `後 · After` caption underneath.
+
+```tsx
+<PhotoPair
+  before={report.before_image_path}
+  after={report.after_image_path}
 />
 ```
 
