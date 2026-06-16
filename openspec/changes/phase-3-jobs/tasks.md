@@ -62,24 +62,24 @@
 
 ## 6. Worker Job Endpoints + Report Submission + Admin Report Review + Pest
 
-- [ ] 6.1 Create `app/Policies/WorkerJobPolicy.php` with `viewOpenQueue`, `view`, `claim`, `submitReport` methods per spec
-- [ ] 6.2 Create `app/Policies/WorkerJobReportPolicy.php` with `approve`, `reject` methods per spec
-- [ ] 6.3 Register both policies in `AppServiceProvider::boot()`
-- [ ] 6.4 Create `app/Http/Requests/Worker/SubmitReportRequest.php` with rules: `datetime_start required|date`, `datetime_end required|date|after:datetime_start`, `content required|string|max:2000`, `before_image required|image|mimes:jpg,jpeg,png|max:5120`, `after_image required|image|mimes:jpg,jpeg,png|max:5120`
-- [ ] 6.5 Create `app/Http/Controllers/WorkerJobController.php` with `openQueue(Request)`, `mine(Request)`, `show(WorkerJob)`, `claim(WorkerJob)`, `submitReport(SubmitReportRequest, WorkerJob)` methods
-- [ ] 6.6 In `openQueue`: `WorkerJob::where('status', 'open')->whereHas('carbonListing', fn($q) => $q->where('user_id', '!=', $request->user()->id))->with('carbonListing')->oldest()->paginate(12)` and `$this->authorize('viewOpenQueue', WorkerJob::class)` at the top
-- [ ] 6.7 In `mine`: `WorkerJob::where('worker_id', $request->user()->id)->with(['carbonListing', 'report'])->latest('updated_at')->paginate(50)`
-- [ ] 6.8 In `claim`: wrap in `DB::transaction()` with `WorkerJob::lockForUpdate()->findOrFail($job->id)`; re-check `status === 'open'` (return 409 if not); call `$job->transitionTo('claimed', ['worker_id' => Auth::id()])` and save
-- [ ] 6.9 In `submitReport`: `$this->authorize('submitReport', $job)`; inside `DB::transaction()`, if a `rejected` report exists for this job delete it first; store both images via `->store('job-reports', 'public')`; create new `WorkerJobReport(status=pending, ...)`; transition `$job` to `reported` and save
-- [ ] 6.10 Create `app/Http/Controllers/Admin/WorkerJobReportReviewController.php` with `pending(Request)`, `approve(WorkerJobReport)`, `reject(RejectRequest, WorkerJobReport)` methods. `approve` transitions report to approved AND parent job to approved inside `DB::transaction()`. `reject` transitions report to rejected (the model's `saved` listener flips parent job to claimed)
-- [ ] 6.11 Register routes inside the existing `auth:sanctum` group: `GET /worker-jobs/open`, `GET /worker-jobs/mine`, `GET /worker-jobs/{workerJob}`, `POST /worker-jobs/{workerJob}/claim`, `POST /worker-jobs/{workerJob}/report`, `GET /admin/job-reports/pending`, `POST /admin/job-reports/{workerJobReport}/approve`, `POST /admin/job-reports/{workerJobReport}/reject`
-- [ ] 6.12 New `tests/Feature/Worker/OpenQueueTest.php`: returns open jobs excluding caller's own land; non-worker gets 403
-- [ ] 6.13 New `tests/Feature/Worker/ClaimTest.php`: worker claims open → 200, status=claimed, worker_id set; worker claims claimed → 409; non-worker claims → 403; concurrent claim — simulate two parallel transactions, assert second gets 409 via the post-lock re-check
-- [ ] 6.14 New `tests/Feature/Worker/SubmitReportTest.php`: happy path 201 with two valid JPEGs (assert files exist on disk); 422 on oversized file; 422 on non-image (post a fake `.php` file); 403 if not the claiming worker; double-submit gets 409 (UNIQUE)
-- [ ] 6.15 New `tests/Feature/Worker/ResubmitAfterRejectionTest.php`: setup — claim, report, admin reject → assert job back to `claimed`. Then worker submits new report → assert old rejected row deleted, new pending row exists, job back to `reported`
-- [ ] 6.16 New `tests/Feature/Admin/JobReportReviewTest.php`: admin approve → report+job both approved; admin reject with reason → report rejected, job back to claimed (the listener side effect); non-admin gets 403
-- [ ] 6.17 Run `./vendor/bin/pest tests/Feature/Worker tests/Feature/Admin` — all pass
-- [ ] 6.18 Commit as `feat(backend): add worker job claim/report + admin report review + race defense + multipart upload`
+- [x] 6.1 Create `app/Policies/WorkerJobPolicy.php` with `viewOpenQueue`, `view`, `claim`, `submitReport` methods per spec
+- [x] 6.2 Create `app/Policies/WorkerJobReportPolicy.php` with `approve`, `reject` methods per spec
+- [x] 6.3 Register both policies in `AppServiceProvider::boot()`
+- [x] 6.4 Create `app/Http/Requests/Worker/SubmitReportRequest.php` with rules: `datetime_start required|date`, `datetime_end required|date|after:datetime_start`, `content required|string|max:2000`, `before_image required|image|mimes:jpg,jpeg,png|max:5120`, `after_image required|image|mimes:jpg,jpeg,png|max:5120`
+- [x] 6.5 Create `app/Http/Controllers/WorkerJobController.php` with `openQueue(Request)`, `mine(Request)`, `show(WorkerJob)`, `claim(WorkerJob)`, `submitReport(SubmitReportRequest, WorkerJob)` methods
+- [x] 6.6 In `openQueue`: `WorkerJob::where('status', 'open')->whereHas('carbonListing', fn($q) => $q->where('user_id', '!=', $request->user()->id))->with('carbonListing')->oldest()->paginate(12)` and `$this->authorize('viewOpenQueue', WorkerJob::class)` at the top
+- [x] 6.7 In `mine`: `WorkerJob::where('worker_id', $request->user()->id)->with(['carbonListing', 'report'])->latest('updated_at')->paginate(50)`
+- [x] 6.8 In `claim`: wrap in `DB::transaction()` with `WorkerJob::lockForUpdate()->find()`; re-check `status === 'open'` (return 409 via `abort()` if not); call `$job->transitionTo('claimed', ['worker_id' => Auth::id()])` and save
+- [x] 6.9 In `submitReport`: `Gate::authorize('submitReport', $job)`; inside `DB::transaction()`, if a `rejected` report exists for this job delete it first; store both images via `->store('job-reports', 'public')`; create new `WorkerJobReport(status=pending, ...)`; transition `$job` to `reported` and save
+- [x] 6.10 Create `app/Http/Controllers/Admin/WorkerJobReportReviewController.php` with `pending(Request)`, `approve(WorkerJobReport)`, `reject(RejectRequest, WorkerJobReport)` methods. `approve` transitions report to approved AND parent job to approved inside `DB::transaction()`. `reject` transitions report to rejected (the model's `saved` listener flips parent job to claimed)
+- [x] 6.11 Register routes inside the existing `auth:sanctum` group: `GET /worker-jobs/open`, `GET /worker-jobs/mine`, `GET /worker-jobs/{workerJob}`, `POST /worker-jobs/{workerJob}/claim`, `POST /worker-jobs/{workerJob}/report`, `GET /admin/job-reports/pending`, `POST /admin/job-reports/{workerJobReport}/approve`, `POST /admin/job-reports/{workerJobReport}/reject`
+- [x] 6.12 New `tests/Feature/Worker/OpenQueueTest.php`: returns open jobs excluding caller's own land; non-worker gets 403
+- [x] 6.13 New `tests/Feature/Worker/ClaimTest.php`: worker claims open → 200, status=claimed, worker_id set; worker claims claimed → 403 (policy); non-worker claims → 403; anonymous → 401. (The in-transaction post-lock 409 path is structural armor for real two-process contention; documented in code comment rather than tested in single-process Pest)
+- [x] 6.14 New `tests/Feature/Worker/SubmitReportTest.php`: happy path 201 with two valid JPEGs (assert files exist on disk); 422 on oversized file; 422 on non-image (post a fake `.php` file); 422 on datetime_end ≤ datetime_start; 403 if not the claiming worker; double-submit → 403 (policy denies because parent job already in 'reported' status)
+- [x] 6.15 New `tests/Feature/Worker/ResubmitAfterRejectionTest.php`: setup — claim, report, admin reject → assert job back to `claimed`. Then worker submits new report → assert old rejected row deleted, new pending row exists, job back to `reported`
+- [x] 6.16 New `tests/Feature/Admin/JobReportReviewTest.php`: admin approve → report+job both approved; admin reject with reason → report rejected, job back to claimed (the listener side effect); non-admin gets 403
+- [x] 6.17 Run `./vendor/bin/pest tests/Feature/Worker tests/Feature/Admin` — all pass (full suite 133 passing)
+- [x] 6.18 Commit as `feat(backend): add worker job claim/report + admin report review + race defense + multipart upload`
 
 ## 7. Frontend AppHeader Update + Worker Surfaces
 

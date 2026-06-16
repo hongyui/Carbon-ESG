@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Admin\CarbonListingReviewController;
 use App\Http\Controllers\Admin\WorkerApplicationReviewController;
+use App\Http\Controllers\Admin\WorkerJobReportReviewController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CarbonListingController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\WorkerApplicationController;
+use App\Http\Controllers\WorkerJobController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', fn () => ['status' => 'ok']);
@@ -47,5 +49,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/pending', [WorkerApplicationReviewController::class, 'pending']);
         Route::post('/{workerApplication}/approve', [WorkerApplicationReviewController::class, 'approve']);
         Route::post('/{workerApplication}/reject', [WorkerApplicationReviewController::class, 'reject']);
+    });
+
+    // Worker jobs — read (static routes first)
+    Route::get('/worker-jobs/open', [WorkerJobController::class, 'openQueue']);
+    Route::get('/worker-jobs/mine', [WorkerJobController::class, 'mine']);
+    Route::get('/worker-jobs/{workerJob}', [WorkerJobController::class, 'show']);
+
+    // Worker jobs — write
+    Route::post('/worker-jobs/{workerJob}/claim', [WorkerJobController::class, 'claim']);
+    Route::post('/worker-jobs/{workerJob}/report', [WorkerJobController::class, 'submitReport']);
+
+    // Admin review — job reports
+    Route::prefix('admin/job-reports')->group(function () {
+        Route::get('/pending', [WorkerJobReportReviewController::class, 'pending']);
+        Route::post('/{workerJobReport}/approve', [WorkerJobReportReviewController::class, 'approve']);
+        Route::post('/{workerJobReport}/reject', [WorkerJobReportReviewController::class, 'reject']);
     });
 });
