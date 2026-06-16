@@ -62,3 +62,38 @@ it('rejects anonymous create with 401', function () {
 
     $response->assertUnauthorized();
 });
+
+it('defaults needs_workers to false when omitted', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/carbon-listings', [
+        'title' => 'A',
+        'description' => 'Test',
+        'hectares' => 1.0,
+        'tonnes_co2e' => 1.0,
+        'location' => 'Test',
+        'price_twd' => 1000,
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonPath('listing.needs_workers', false);
+});
+
+it('accepts needs_workers=true and persists the flag', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->postJson('/api/carbon-listings', [
+        'title' => 'B',
+        'description' => 'Test',
+        'hectares' => 1.0,
+        'tonnes_co2e' => 1.0,
+        'location' => 'Test',
+        'price_twd' => 1000,
+        'needs_workers' => true,
+    ]);
+
+    $response->assertCreated()
+        ->assertJsonPath('listing.needs_workers', true);
+
+    expect(CarbonListing::where('user_id', $user->id)->value('needs_workers'))->toBeTrue();
+});

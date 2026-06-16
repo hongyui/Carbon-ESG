@@ -25,6 +25,7 @@ class CreateRequest extends FormRequest
             'tonnes_co2e' => ['required', 'numeric', 'gt:0'],
             'location' => ['required', 'string', 'max:255'],
             'price_twd' => ['required', 'numeric', 'gt:0'],
+            'needs_workers' => ['sometimes', 'boolean'],
         ];
     }
 }

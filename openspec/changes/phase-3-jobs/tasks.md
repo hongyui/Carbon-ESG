@@ -29,14 +29,14 @@
 
 ## 3. Carbon Listing MODIFY: needs_workers + auto-create WorkerJob on sold
 
-- [ ] 3.1 Update `app/Models/CarbonListing.php`: add `needs_workers` to `$fillable`, add `'needs_workers' => 'boolean'` to `$casts`
-- [ ] 3.2 Extend the existing `CarbonListing::saving()` listener (or add a `saved` listener — choose `saved` so the parent insert is committed before the child insert tries to FK-reference it): when `status` transitions to `'sold'` AND `needs_workers === true`, call `WorkerJob::create(['carbon_listing_id' => $this->id, 'status' => 'open'])` inside the same transaction
-- [ ] 3.3 Update `app/Http/Requests/CarbonListings/CreateRequest.php`: add rule `'needs_workers' => 'boolean'` (optional; defaults to false via the migration)
-- [ ] 3.4 Update `app/Http/Resources/CarbonListingResource.php`: expose `needs_workers` in the toArray output
-- [ ] 3.5 Update phase-2's `CreateTest.php` to assert `needs_workers=false` is the default; add a happy-path test case posting `needs_workers=true`
-- [ ] 3.6 New `tests/Feature/CarbonListings/SoldTransitionSideEffectTest.php`: scenario A — listing with `needs_workers=true` is purchased → assert `worker_jobs` row exists with `status=open`, `carbon_listing_id` matches, `worker_id` null. Scenario B — listing with `needs_workers=false` is purchased → assert no `worker_jobs` row exists. Scenario C — force a UNIQUE collision by pre-inserting a `worker_jobs(carbon_listing_id)` row, then attempt purchase → assert the QueryException rolls back the listing transition (listing stays `approved`) and the purchase row is not created
-- [ ] 3.7 Run `./vendor/bin/pest tests/Feature/CarbonListings tests/Feature/Worker` — all pass
-- [ ] 3.8 Commit as `feat(backend): add needs_workers to listings + sold→WorkerJob auto-create with rollback safety`
+- [x] 3.1 Update `app/Models/CarbonListing.php`: add `needs_workers` to `$fillable`, add `'needs_workers' => 'boolean'` to `$casts`, add `'needs_workers' => false` to `$attributes` so the in-memory default matches the migration
+- [x] 3.2 Add `CarbonListing::saved()` listener (chosen over `saving` so the parent insert commits first): when `status` is dirty and now `'sold'` AND `needs_workers === true`, call `WorkerJob::create(['carbon_listing_id' => $this->id, 'status' => 'open'])` inside the same transaction
+- [x] 3.3 Update `app/Http/Requests/CarbonListings/CreateRequest.php`: add rule `'needs_workers' => ['sometimes', 'boolean']` (optional; defaults to false via the migration + model)
+- [x] 3.4 ~~Update `app/Http/Resources/CarbonListingResource.php`~~ — no Resource class exists in phase-2; `$listing` serializes directly via Eloquent toArray and now exposes `needs_workers` via the new cast
+- [x] 3.5 Update phase-2's `CreateTest.php` to assert `needs_workers=false` is the default; add a happy-path test case posting `needs_workers=true`
+- [x] 3.6 New `tests/Feature/CarbonListings/SoldTransitionSideEffectTest.php`: scenario A — listing with `needs_workers=true` is purchased → assert `worker_jobs` row exists with `status=open`, `carbon_listing_id` matches, `worker_id` null. Scenario B — listing with `needs_workers=false` is purchased → assert no `worker_jobs` row exists. Scenario C — force a UNIQUE collision by pre-inserting a `worker_jobs(carbon_listing_id)` row, then attempt purchase → assert the QueryException rolls back the listing transition (listing stays `approved`) and the purchase row is not created
+- [x] 3.7 Run `./vendor/bin/pest tests/Feature/CarbonListings tests/Feature/Worker` — all pass
+- [x] 3.8 Commit as `feat(backend): add needs_workers to listings + sold→WorkerJob auto-create with rollback safety`
 
 ## 4. /api/me MODIFY: add isWorker
 

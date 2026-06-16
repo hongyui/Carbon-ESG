@@ -49,6 +49,7 @@ class CarbonListing extends Model
      */
     protected $attributes = [
         'status' => self::STATUS_PENDING,
+        'needs_workers' => false,
     ];
 
     protected $fillable = [
@@ -60,6 +61,7 @@ class CarbonListing extends Model
         'location',
         'price_twd',
         'status',
+        'needs_workers',
         'admin_note',
         'approved_by',
         'approved_at',
@@ -71,6 +73,7 @@ class CarbonListing extends Model
             'hectares' => 'decimal:2',
             'tonnes_co2e' => 'decimal:2',
             'price_twd' => 'decimal:2',
+            'needs_workers' => 'boolean',
             'approved_at' => 'datetime',
         ];
     }
@@ -148,6 +151,28 @@ class CarbonListing extends Model
             $new = (string) $listing->status;
 
             self::assertValidTransition($original, $new);
+        });
+
+        static::saved(function (CarbonListing $listing): void {
+            // Sold + needs_workers → atomically open a maintenance WorkerJob.
+            // Any QueryException (e.g. stale UNIQUE collision) bubbles up and
+            // rolls the surrounding purchase transaction back.
+            if (! $listing->wasChanged('status')) {
+                return;
+            }
+
+            if ($listing->status !== self::STATUS_SOLD) {
+                return;
+            }
+
+            if (! $listing->needs_workers) {
+                return;
+            }
+
+            WorkerJob::create([
+                'carbon_listing_id' => $listing->id,
+                'status' => WorkerJob::STATUS_OPEN,
+            ]);
         });
     }
 }
