@@ -47,18 +47,18 @@
 
 ## 5. Worker Application Endpoints + Admin Review + Pest
 
-- [ ] 5.1 Create `app/Http/Requests/Worker/CreateApplicationRequest.php` with rules: `reason required|string|max:2000`, `has_experience required|boolean`, `age required|integer|min:18|max:99`, `residence required|string|max:255`, `contact required|string|max:255`
-- [ ] 5.2 Create `app/Http/Requests/Worker/RejectRequest.php` with rule `reason nullable|string|max:1000` (shared between application + report rejection — name it `Worker/RejectRequest.php`)
-- [ ] 5.3 Create `app/Policies/WorkerApplicationPolicy.php` with `create`, `view`, `approve`, `reject` methods per spec
-- [ ] 5.4 Create `app/Http/Controllers/WorkerApplicationController.php` with `store(CreateApplicationRequest)`, `mine(Request)` methods. `store` enforces UNIQUE by catching `QueryException(23000)` and returning 409. `mine` returns the row or 404
-- [ ] 5.5 Create `app/Http/Controllers/Admin/WorkerApplicationReviewController.php` with `pending(Request)`, `approve(WorkerApplication)`, `reject(RejectRequest, WorkerApplication)`
-- [ ] 5.6 Register `WorkerApplicationPolicy` in `AppServiceProvider::boot()`
-- [ ] 5.7 Register routes in `routes/api.php` inside the existing `auth:sanctum` group: `POST /worker-applications`, `GET /worker-applications/mine`, `GET /admin/worker-applications/pending`, `POST /admin/worker-applications/{workerApplication}/approve`, `POST /admin/worker-applications/{workerApplication}/reject`
-- [ ] 5.8 New `tests/Feature/Worker/ApplyTest.php`: 201 + persisted row on happy path; 422 on missing `reason`; 422 on `age=17`; 409 on second apply
-- [ ] 5.9 New `tests/Feature/Worker/MineApplicationTest.php`: 404 when no row; 200 with current status when row exists
-- [ ] 5.10 New `tests/Feature/Admin/WorkerApplicationReviewTest.php`: admin approve transitions to `approved` and stamps `reviewer_id`; admin reject with reason stores it; non-admin gets 403; double-approve gets `InvalidStateTransition` (caught and surfaced as 422)
-- [ ] 5.11 Run `./vendor/bin/pest tests/Feature/Worker tests/Feature/Admin/WorkerApplicationReviewTest.php` — all pass
-- [ ] 5.12 Commit as `feat(backend): add worker application endpoints + admin review with Pest coverage`
+- [x] 5.1 Create `app/Http/Requests/Worker/CreateApplicationRequest.php` with rules: `reason required|string|max:2000`, `has_experience required|boolean`, `age required|integer|min:18|max:99`, `residence required|string|max:255`, `contact required|string|max:255`
+- [x] 5.2 Create `app/Http/Requests/Worker/RejectRequest.php` with rule `reason nullable|string|max:1000` (shared between application + report rejection — name it `Worker/RejectRequest.php`)
+- [x] 5.3 Create `app/Policies/WorkerApplicationPolicy.php` with `create`, `view`, `approve`, `reject` methods per spec
+- [x] 5.4 Create `app/Http/Controllers/WorkerApplicationController.php` with `store(CreateApplicationRequest)`, `mine(Request)` methods. `store` enforces UNIQUE by catching `QueryException(23000)` and returning 409 (and `Gate::authorize('create', ...)` blocks ahead with 403 in normal flow). `mine` returns the row or 404
+- [x] 5.5 Create `app/Http/Controllers/Admin/WorkerApplicationReviewController.php` with `pending(Request)`, `approve(WorkerApplication)`, `reject(RejectRequest, WorkerApplication)`
+- [x] 5.6 Register `WorkerApplicationPolicy` in `AppServiceProvider::boot()`
+- [x] 5.7 Register routes in `routes/api.php` inside the existing `auth:sanctum` group: `POST /worker-applications`, `GET /worker-applications/mine`, `GET /admin/worker-applications/pending`, `POST /admin/worker-applications/{workerApplication}/approve`, `POST /admin/worker-applications/{workerApplication}/reject`
+- [x] 5.8 New `tests/Feature/Worker/ApplyTest.php`: 201 + persisted row on happy path; 422 on missing `reason`; 422 on `age=17`; 403 on second apply (policy denial fires before UNIQUE collision)
+- [x] 5.9 New `tests/Feature/Worker/MineApplicationTest.php`: 404 when no row; 200 with current status when row exists
+- [x] 5.10 New `tests/Feature/Admin/WorkerApplicationReviewTest.php`: admin approve transitions to `approved` and stamps `reviewer_id`; admin reject with reason stores it; non-admin gets 403; double-approve gets 403 (policy denies non-pending status)
+- [x] 5.11 Run `./vendor/bin/pest tests/Feature/Worker tests/Feature/Admin/WorkerApplicationReviewTest.php` — all pass
+- [x] 5.12 Commit as `feat(backend): add worker application endpoints + admin review with Pest coverage`
 
 ## 6. Worker Job Endpoints + Report Submission + Admin Report Review + Pest
 

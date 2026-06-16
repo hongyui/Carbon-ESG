@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\CarbonListing;
+use App\Models\WorkerApplication;
 use App\Policies\CarbonListingPolicy;
+use App\Policies\WorkerApplicationPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(CarbonListing::class, CarbonListingPolicy::class);
+        Gate::policy(WorkerApplication::class, WorkerApplicationPolicy::class);
     }
 }
