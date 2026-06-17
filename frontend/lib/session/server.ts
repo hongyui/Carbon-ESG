@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import type { User } from '@/lib/types/user';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+const FRONTEND_URL =
+  process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'http://localhost:3000';
 
 export async function getSessionFromCookies(): Promise<User | null> {
   const cookieStore = await cookies();
@@ -17,6 +19,11 @@ export async function getSessionFromCookies(): Promise<User | null> {
     headers: {
       Cookie: cookieHeader,
       Accept: 'application/json',
+      // Sanctum's EnsureFrontendRequestsAreStateful middleware needs
+      // Referer (or Origin) to match SANCTUM_STATEFUL_DOMAINS — otherwise
+      // a server-to-server fetch carrying valid session cookies still
+      // gets treated as a stateless API call and returns 401.
+      Referer: FRONTEND_URL,
     },
     cache: 'no-store',
   });

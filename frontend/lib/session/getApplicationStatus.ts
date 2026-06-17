@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import type { WorkerApplication } from '@/lib/api/worker';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+const FRONTEND_URL =
+  process.env.NEXT_PUBLIC_FRONTEND_URL ?? 'http://localhost:3000';
 
 /**
  * Server-side helper: return the current user's worker_applications row
@@ -23,6 +25,8 @@ export async function getApplicationStatusFromCookies(): Promise<WorkerApplicati
     headers: {
       Cookie: cookieHeader,
       Accept: 'application/json',
+      // Sanctum stateful detection (see lib/session/server.ts comment).
+      Referer: FRONTEND_URL,
     },
     cache: 'no-store',
   });
